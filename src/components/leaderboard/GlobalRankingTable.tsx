@@ -12,7 +12,7 @@ import {
   Typography,
   Chip
 } from '@mui/material';
-import { PoliticalFigure } from '../../types';
+import { PoliticalFigure } from '../../types/PoliticalFigure';
 
 interface GlobalRankingTableProps {
   politicians: PoliticalFigure[];
@@ -24,17 +24,15 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politici
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Rank</TableCell>
-            <TableCell>Politician</TableCell>
-            <TableCell>Total Charges</TableCell>
-            <TableCell>Prison Time</TableCell>
-            <TableCell>Total Fine</TableCell>
-            <TableCell>Score</TableCell>
+            <TableCell>Rang</TableCell>
+            <TableCell>Personnalité politique</TableCell>
+            <TableCell>Nombre de condamnations</TableCell>
+            <TableCell>Temps en prison requis</TableCell>
+            <TableCell>Total d'amendes</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {politicians.map((politician, index) => {
-            const score = politician.fine + (politician.sentenceDuration * 10000);
             return (
               <TableRow key={politician.id}>
                 <TableCell>
@@ -68,7 +66,6 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politici
                 <TableCell>{politician.charges.length}</TableCell>
                 <TableCell>{politician.sentenceDuration} months</TableCell>
                 <TableCell>€{politician.fine.toLocaleString()}</TableCell>
-                <TableCell>{score.toLocaleString()}</TableCell>
               </TableRow>
             );
           })}

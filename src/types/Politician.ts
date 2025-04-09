@@ -1,15 +1,15 @@
 export interface Sentence {
     type: string;
     fine: number;
-    'prison-time': number;
+    prisonTime: number;
     date: string;
     source?: string;
 }
 
 export interface Politician {
     name: string;
-    'political-group': string;
-    'political-side': string;
+    politicalGroup: string;
+    politicalSide: string;
     photo: string;
     sentences: Sentence[];
 }

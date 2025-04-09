@@ -1,10 +1,9 @@
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import Leaderboard from './components/Leaderboard';
 import { data } from './data/data';
-import type { PoliticalFigure } from './types';
-import type { Politician, Sentence } from './types/data';
+import type { PoliticalFigure } from './types/PoliticalFigure';
+import type { Politician, Sentence } from './types/Politician';
 
-// Map political sides to colors
 const politicalColors: { [key: string]: string } = {
   'far-right': '#000000',
   'right': '#0000FF',
@@ -13,22 +12,15 @@ const politicalColors: { [key: string]: string } = {
   'far-left': '#FF0000'
 };
 
-// Transform the data from data.jsonc to match the expected format
 const transformedData: PoliticalFigure[] = data.map((politician: Politician, index: number) => {
-  // Get the most recent sentence date
-  const mostRecentSentence = politician.sentences.reduce((latest: Sentence, current: Sentence) => {
-    return new Date(current.date) > new Date(latest.date) ? current : latest;
-  }, politician.sentences[0]);
-
-  return {
+ return {
     id: String(index + 1),
     name: politician.name,
-    party: politician['political-group'],
-    politicalColor: politicalColors[politician['political-side']] || '#808080',
+    party: politician.politicalGroup,
+    politicalColor: politicalColors[politician.politicalSide],
     photo: politician.photo,
-    sentenceDate: mostRecentSentence.date,
     charges: politician.sentences.map(s => s.type),
-    sentenceDuration: politician.sentences.reduce((total: number, s: Sentence) => total + s['prison-time'], 0),
+    sentenceDuration: politician.sentences.reduce((total: number, s: Sentence) => total + s.prisonTime, 0),
     fine: politician.sentences.reduce((total: number, s: Sentence) => total + s.fine, 0)
   };
 });

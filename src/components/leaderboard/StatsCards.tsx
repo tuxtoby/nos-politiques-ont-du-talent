@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Card, CardContent, Typography } from '@mui/material';
 import { Group as GroupIcon, Flag as FlagIcon } from '@mui/icons-material';
-import { PoliticalFigure } from '../../types';
+import { PoliticalFigure } from '../../types/PoliticalFigure';
 
 interface StatsCardsProps {
   data: PoliticalFigure[];
@@ -17,7 +17,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ data }) => {
         <Card sx={{ bgcolor: '#e8f5e9', height: '100%' }}>
           <CardContent sx={{ textAlign: 'center' }}>
             <GroupIcon sx={{ fontSize: 40, color: '#2e7d32', mb: 1 }} />
-            <Typography variant="h6">Registered Politicians</Typography>
+            <Typography variant="h6">Nombre de personnalités politiques</Typography>
             <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{totalPoliticians}</Typography>
           </CardContent>
         </Card>
@@ -26,7 +26,7 @@ export const StatsCards: React.FC<StatsCardsProps> = ({ data }) => {
         <Card sx={{ bgcolor: '#e3f2fd', height: '100%' }}>
           <CardContent sx={{ textAlign: 'center' }}>
             <FlagIcon sx={{ fontSize: 40, color: '#1976d2', mb: 1 }} />
-            <Typography variant="h6">Total Charges</Typography>
+            <Typography variant="h6">Nombre de condamnations</Typography>
             <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{totalCharges}</Typography>
           </CardContent>
         </Card>

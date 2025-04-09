@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Card, CardContent, Box, Avatar, Typography } from '@mui/material';
 import { EmojiEvents as TrophyIcon } from '@mui/icons-material';
-import { PoliticalFigure } from '../../types';
+import { PoliticalFigure } from '../../types/PoliticalFigure';
 
 interface TopThreeLeadersProps {
   leaders: PoliticalFigure[];
@@ -42,16 +42,16 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
               </Box>
               <Grid container spacing={2} sx={{ textAlign: 'center' }}>
                 <Grid size={{ xs: 4}}>
-                  <Typography variant="h4">{politician.charges.length}</Typography>
-                  <Typography variant="caption">CHARGES</Typography>
+                  <Typography variant="h5">{politician.charges.length}</Typography>
+                  <Typography variant="caption">CONDAMNATIONS</Typography>
                 </Grid>
                 <Grid size={{ xs: 4}}>
-                  <Typography variant="h6">{politician.sentenceDuration}</Typography>
-                  <Typography variant="caption">MONTHS</Typography>
+                  <Typography variant="h5">{politician.sentenceDuration}</Typography>
+                  <Typography variant="caption">MOIS DE PRISON</Typography>
                 </Grid>
                 <Grid size={{ xs: 4}}>
-                  <Typography variant="h6">{(politician.fine / 1000).toFixed(0)}K</Typography>
-                  <Typography variant="caption">FINE (€)</Typography>
+                  <Typography variant="h5">{politician.fine.toLocaleString()}</Typography>
+                  <Typography variant="caption">D'AMENDE (€)</Typography>
                 </Grid>
               </Grid>
             </CardContent>
