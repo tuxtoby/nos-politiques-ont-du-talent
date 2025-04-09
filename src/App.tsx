@@ -3,17 +3,10 @@ import Leaderboard from './components/Leaderboard';
 import { data } from './data/data';
 import type { PoliticalFigure } from './types/PoliticalFigure';
 import type { Politician, Sentence } from './types/Politician';
-
-const politicalColors: { [key: string]: string } = {
-  'far-right': '#000000',
-  'right': '#0000FF',
-  'center': '#FFA500',
-  'left': '#FF69B4',
-  'far-left': '#FF0000'
-};
+import { politicalColors } from './constants/colors';
 
 const transformedData: PoliticalFigure[] = data.map((politician: Politician, index: number) => {
- return {
+  return {
     id: String(index + 1),
     name: politician.name,
     party: politician.politicalGroup,

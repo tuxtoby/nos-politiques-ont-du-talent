@@ -4,7 +4,7 @@ export const data: Politician[] = [
     {
         "name": "Jean-Marie Lepen",
         "politicalGroup": "RN",
-        "politicalSide": "far-right",
+        "politicalSide": "être",
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Le_Pen_Jean-Marie_1999.jpg/1200px-Le_Pen_Jean-Marie_1999.jpg",
         "sentences": [
             {
@@ -19,6 +19,21 @@ export const data: Politician[] = [
                 "fine": 30000,
                 "prisonTime": 6,
                 "date": "2015-03-02",
+                "source": "https://www.jmlepen.com/"
+            }
+        ]
+    },
+    {
+        "name": "Éric Zemmour",
+        "politicalGroup": "Reconquête!",
+        "politicalSide": "far-right",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Le_Pen_Jean-Marie_1999.jpg/1200px-Le_Pen_Jean-Marie_1999.jpg",
+        "sentences": [
+            {
+                "type": "corruption",
+                "fine": 10000,
+                "prisonTime": 12,
+                "date": "2010-01-01",
                 "source": "https://www.jmlepen.com/"
             }
         ]
