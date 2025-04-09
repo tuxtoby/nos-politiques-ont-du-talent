@@ -7,6 +7,14 @@ interface TopThreeLeadersProps {
   leaders: PoliticalFigure[];
 }
 
+const trophyStyles = {
+  largeIcon: {
+    width: 50,
+    height: 50,
+  },
+
+};
+
 export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => {
   const getTrophyColor = (index: number) => {
     switch(index) {
@@ -18,7 +26,7 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
   };
 
   return (
-    <Grid container spacing={3}>
+    <Grid container spacing={10}>
       {leaders.map((politician, index) => (
         <Grid size={{ xs: 12, md: 4 }} key={politician.id}>
           <Card sx={{ borderRadius: 5, boxShadow: 2}}>
@@ -32,13 +40,13 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
                   }}
                   src={politician.photo}
                 >
-                  {!politician.photo && politician.name.charAt(0)}
+                  {!politician.photo}
                 </Avatar>
                 <Box sx={{ ml: 2 }}>
                   <Typography variant="h6">{politician.name}</Typography>
                   <Typography color="textSecondary">{politician.party}</Typography>
                 </Box>
-                <TrophyIcon sx={{ ml: 'auto', color: getTrophyColor(index) }} />
+                <TrophyIcon sx={{ ml: 'auto', color: getTrophyColor(index), ...trophyStyles.largeIcon }} />
               </Box>
               <Grid container spacing={2} sx={{ textAlign: 'center' }}>
                 <Grid size={{ xs: 4}}>
@@ -50,8 +58,8 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
                   <Typography variant="caption">MOIS DE PRISON</Typography>
                 </Grid>
                 <Grid size={{ xs: 4}}>
-                  <Typography variant="h5">{politician.fine.toLocaleString()}</Typography>
-                  <Typography variant="caption">D'AMENDE (€)</Typography>
+                  <Typography variant="h5">{politician.fine.toLocaleString()} €</Typography>
+                  <Typography variant="caption">D'AMENDE</Typography>
                 </Grid>
               </Grid>
             </CardContent>

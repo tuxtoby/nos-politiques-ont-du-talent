@@ -64,8 +64,8 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politici
                   </Box>
                 </TableCell>
                 <TableCell>{politician.charges.length}</TableCell>
-                <TableCell>{politician.sentenceDuration} months</TableCell>
-                <TableCell>€{politician.fine.toLocaleString()}</TableCell>
+                <TableCell>{politician.sentenceDuration} mois</TableCell>
+                <TableCell>{politician.fine.toLocaleString()} €</TableCell>
               </TableRow>
             );
           })}
