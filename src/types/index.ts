@@ -8,6 +8,7 @@ export interface PoliticalFigure {
   sentenceDuration: number; // in months
   charges: string[];
   status: 'sentenced' | 'appealing' | 'completed';
+  fine: number; // total fine amount in euros
 }
 
 export interface PartyStats {
