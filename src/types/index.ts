@@ -3,12 +3,11 @@ export interface PoliticalFigure {
   name: string;
   party: string;
   politicalColor: string;
-  country: string;
   sentenceDate: string;
   sentenceDuration: number; // in months
   charges: string[];
-  status: 'sentenced' | 'appealing' | 'completed';
   fine: number; // total fine amount in euros
+  photo: string;
 }
 
 export interface PartyStats {

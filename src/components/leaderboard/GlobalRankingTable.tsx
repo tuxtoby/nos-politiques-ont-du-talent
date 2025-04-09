@@ -48,16 +48,17 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politici
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <Avatar
                       sx={{ 
-                        width: 32, 
-                        height: 32, 
+                        width: 75, 
+                        height: 75, 
                         mr: 1,
-                        bgcolor: politician.politicalColor
+                        bgcolor: politician.photo ? 'transparent' : politician.politicalColor
                       }}
+                      src={politician.photo}
                     >
-                      {politician.name.charAt(0)}
+                      {!politician.photo && politician.name.charAt(0)}
                     </Avatar>
                     <Box>
-                      <Typography variant="body2">{politician.name}</Typography>
+                      <Typography variant="h6">{politician.name}</Typography>
                       <Typography variant="caption" color="textSecondary">
                         {politician.party}
                       </Typography>

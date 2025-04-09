@@ -15,7 +15,7 @@ const politicalColors: { [key: string]: string } = {
 
 // Transform the data from data.jsonc to match the expected format
 const transformedData: PoliticalFigure[] = data.map((politician: Politician, index: number) => {
-  // Get the most recent sentence
+  // Get the most recent sentence date
   const mostRecentSentence = politician.sentences.reduce((latest: Sentence, current: Sentence) => {
     return new Date(current.date) > new Date(latest.date) ? current : latest;
   }, politician.sentences[0]);
@@ -25,11 +25,10 @@ const transformedData: PoliticalFigure[] = data.map((politician: Politician, ind
     name: politician.name,
     party: politician['political-group'],
     politicalColor: politicalColors[politician['political-side']] || '#808080',
-    country: 'France', // All politicians are from France
+    photo: politician.photo,
     sentenceDate: mostRecentSentence.date,
-    sentenceDuration: mostRecentSentence['prison-time'],
-    charges: politician.sentences.map((s: Sentence) => s.type),
-    status: 'sentenced', // Default status since we don't have this info in the data
+    charges: politician.sentences.map(s => s.type),
+    sentenceDuration: politician.sentences.reduce((total: number, s: Sentence) => total + s['prison-time'], 0),
     fine: politician.sentences.reduce((total: number, s: Sentence) => total + s.fine, 0)
   };
 });

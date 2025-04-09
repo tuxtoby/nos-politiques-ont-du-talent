@@ -3,6 +3,7 @@ export const data = [
         "name": "Jean-Marie Lepen",
         "political-group": "RN",
         "political-side": "far-right",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Le_Pen_Jean-Marie_1999.jpg/1200px-Le_Pen_Jean-Marie_1999.jpg",
         "sentences": [
             {
                 "type": "corruption",
@@ -24,6 +25,7 @@ export const data = [
         "name": "François Hollande",
         "political-group": "PS",
         "political-side": "left",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Fran%C3%A7ois_Hollande_-_2017_%2827869823159%29_%28cropped_2%29.jpg/1200px-Fran%C3%A7ois_Hollande_-_2017_%2827869823159%29_%28cropped_2%29.jpg",
         "sentences": [
             {
                 "type": "fraud",
@@ -44,6 +46,7 @@ export const data = [
         "name": "Nicolas Sarkozy",
         "political-group": "LR",
         "political-side": "right",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Nicolas_Sarkozy_in_2010.jpg",
         "sentences": [
             {
                 "type": "corruption",
@@ -72,6 +75,7 @@ export const data = [
         "name": "Marine Le Pen",
         "political-group": "RN",
         "political-side": "far-right",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Le_Pen%2C_Marine-9586_%28cropped%29.jpg",
         "sentences": [
             {
                 "type": "misuse-of-funds",
@@ -93,6 +97,7 @@ export const data = [
         "name": "Jean-Luc Mélenchon",
         "political-group": "LFI",
         "political-side": "far-left",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Jean-Luc_MELENCHON_2016_2_%28cropped%29.jpg",
         "sentences": [
             {
                 "type": "obstruction",
@@ -114,6 +119,7 @@ export const data = [
         "name": "Éric Woerth",
         "political-group": "LR",
         "political-side": "right",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/%C3%89ric_Woerth_2.jpg/1200px-%C3%89ric_Woerth_2.jpg",
         "sentences": [
             {
                 "type": "influence-peddling",
@@ -135,6 +141,7 @@ export const data = [
         "name": "François Bayrou",
         "political-group": "MoDem",
         "political-side": "center",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Fran%C3%A7ois_Bayrou_%28L%C3%A9gislatives_2024%29.jpg/250px-Fran%C3%A7ois_Bayrou_%28L%C3%A9gislatives_2024%29.jpg",
         "sentences": [
             {
                 "type": "misappropriation",
@@ -156,6 +163,7 @@ export const data = [
         "name": "Ségolène Royal",
         "political-group": "PS",
         "political-side": "left",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/2/25/Royal_Toulouse_2012.JPG",
         "sentences": [
             {
                 "type": "embezzlement",
@@ -177,6 +185,7 @@ export const data = [
         "name": "Patrick Balkany",
         "political-group": "LR",
         "political-side": "right",
+        "photo": "https://upload.wikimedia.org/wikipedia/commons/3/31/Resize_800px-Balkany_au_tribunal.jpg",
         "sentences": [
             {
                 "type": "tax-fraud",
@@ -205,6 +214,7 @@ export const data = [
         "name": "Isabelle Balkany",
         "political-group": "LR",
         "political-side": "right",
+        "photo": "https://images.rtl.fr/~c/2000v2000/rtl/www/1161675-isabelle-balkany-le-15-avril-2019.jpg",
         "sentences": [
             {
                 "type": "tax-fraud",

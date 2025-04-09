@@ -10,6 +10,7 @@ export interface Politician {
     name: string;
     'political-group': string;
     'political-side': string;
+    photo: string;
     sentences: Sentence[];
 }
 

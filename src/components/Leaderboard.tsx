@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { PoliticalFigure } from '../types';
 import { StatsCards } from './leaderboard/StatsCards';
-import { LeaderboardFilters } from './leaderboard/LeaderboardFilters';
 import { TopThreeLeaders } from './leaderboard/TopThreeLeaders';
 import { GlobalRankingTable } from './leaderboard/GlobalRankingTable';
 import { LeaderboardHeader } from './leaderboard/LeaderboardHeader';
@@ -34,7 +33,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
       <Box sx={{ mb: 4 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <LeaderboardHeader title="Current Leaders" />
-          <LeaderboardFilters timeFilter={timeFilter} setTimeFilter={setTimeFilter} />
         </Box>
         <TopThreeLeaders leaders={topThree} />
       </Box>

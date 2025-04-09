@@ -21,17 +21,18 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
     <Grid container spacing={3}>
       {leaders.map((politician, index) => (
         <Grid size={{ xs: 12, md: 4 }} key={politician.id}>
-          <Card>
+          <Card sx={{ borderRadius: 5, boxShadow: 2}}>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                 <Avatar
                   sx={{ 
-                    width: 60, 
-                    height: 60,
-                    bgcolor: politician.politicalColor
+                    width: 90, 
+                    height: 90,
+                    bgcolor: politician.photo ? 'transparent' : politician.politicalColor
                   }}
+                  src={politician.photo}
                 >
-                  {politician.name.charAt(0)}
+                  {!politician.photo && politician.name.charAt(0)}
                 </Avatar>
                 <Box sx={{ ml: 2 }}>
                   <Typography variant="h6">{politician.name}</Typography>
@@ -41,7 +42,7 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
               </Box>
               <Grid container spacing={2} sx={{ textAlign: 'center' }}>
                 <Grid size={{ xs: 4}}>
-                  <Typography variant="h6">{politician.charges.length}</Typography>
+                  <Typography variant="h4">{politician.charges.length}</Typography>
                   <Typography variant="caption">CHARGES</Typography>
                 </Grid>
                 <Grid size={{ xs: 4}}>
