@@ -12,7 +12,7 @@ import {
   Typography,
   Chip
 } from '@mui/material';
-import { PoliticalFigure } from '../../types/PoliticalFigure';
+import { PoliticalFigure } from '../../../types/PoliticalFigure';
 
 interface GlobalRankingTableProps {
   politicians: PoliticalFigure[];

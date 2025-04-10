@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Card, CardContent, Typography } from '@mui/material';
 import { Group as GroupIcon, Flag as FlagIcon } from '@mui/icons-material';
-import { PoliticalFigure } from '../../types/PoliticalFigure';
+import { PoliticalFigure } from '../../../types/PoliticalFigure';
 
 interface StatsCardsProps {
   data: PoliticalFigure[];

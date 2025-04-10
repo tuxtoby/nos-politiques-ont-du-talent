@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Card, CardContent, Box, Avatar, Typography } from '@mui/material';
 import { EmojiEvents as TrophyIcon } from '@mui/icons-material';
-import { PoliticalFigure } from '../../types/PoliticalFigure';
+import { PoliticalFigure } from '../../../types/PoliticalFigure';
 
 interface TopThreeLeadersProps {
   leaders: PoliticalFigure[];

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Box, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import { PoliticalFigure } from '../types/PoliticalFigure';
-import { StatsCards } from './leaderboard/StatsCards';
-import { TopThreeLeaders } from './leaderboard/TopThreeLeaders';
-import { GlobalRankingTable } from './leaderboard/GlobalRankingTable';
-import { LeaderboardHeader } from './leaderboard/LeaderboardHeader';
-import { politicalColors } from '../constants/colors';
+import { PoliticalFigure } from '../../types/PoliticalFigure';
+import { StatsCards } from './components/StatsCards';
+import { TopThreeLeaders } from './components/TopThreeLeaders';
+import { GlobalRankingTable } from './components/GlobalRankingTable';
+import { LeaderboardHeader } from './components/LeaderboardHeader';
+import { politicalColors } from '../../constants/colors';
 
 interface LeaderboardProps {
   data: PoliticalFigure[];

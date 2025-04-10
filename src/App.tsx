@@ -1,5 +1,5 @@
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
-import Leaderboard from './components/Leaderboard';
+import Leaderboard from './views/leaderboard/Leaderboard';
 import { data } from './data/data';
 import type { PoliticalFigure } from './types/PoliticalFigure';
 import type { Politician, Sentence } from './types/Politician';
