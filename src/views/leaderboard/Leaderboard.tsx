@@ -6,6 +6,7 @@ import { GlobalRankingTable } from './components/GlobalRankingTable';
 import { LeaderboardHeader } from './components/LeaderboardHeader';
 import { useLeaderboard } from './hooks/useLeaderboard';
 import { useSupabaseData } from '../../hooks/useSupabaseData';
+import { ActionButton } from '../../components/ActionButton';
 
 const styles = {
   container: {
@@ -48,6 +49,16 @@ const styles = {
 const Leaderboard: React.FC = () => {
   const { politicalFigures, loading, error } = useSupabaseData();
   const { displayMode, handleDisplayModeChange, sortedPoliticians, topThree } = useLeaderboard(politicalFigures);
+
+  const handleAddPolitician = () => {
+    // TODO: Implement navigation or modal for adding a politician
+    console.log('Add politician clicked');
+  };
+
+  const handleAddSentence = () => {
+    // TODO: Implement navigation or modal for adding a sentence
+    console.log('Add sentence clicked');
+  };
 
   if (loading) {
     return (
@@ -106,6 +117,11 @@ const Leaderboard: React.FC = () => {
         <LeaderboardHeader title="Classement général" showSearch />
         <GlobalRankingTable politicians={sortedPoliticians} />
       </Box>
+
+      <ActionButton 
+        onAddPolitician={handleAddPolitician}
+        onAddSentence={handleAddSentence}
+      />
     </Box>
   );
 };
