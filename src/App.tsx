@@ -1,7 +1,7 @@
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
-import { Leaderboard } from './views/leaderboard/pages/Leaderboard';
 import { data } from './domains/political/data';
 import { transformPoliticians } from './services/politicianService';
+import Leaderboard from './views/leaderboard/Leaderboard';
 
 const styles = {
   theme: createTheme({
