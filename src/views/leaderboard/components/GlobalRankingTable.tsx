@@ -12,7 +12,19 @@ import {
   Typography,
   Chip
 } from '@mui/material';
-import { PoliticalFigure } from '../../../types/PoliticalFigure';
+import { PoliticalFigure } from '../../../entities/PoliticalFigure';
+
+const styles = {
+  politicianBox: {
+    display: 'flex', 
+    alignItems: 'center'
+  },
+  avatar: {
+    width: 75, 
+    height: 75, 
+    mr: 1
+  }
+};
 
 interface GlobalRankingTableProps {
   politicians: PoliticalFigure[];
@@ -43,13 +55,9 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politici
                   />
                 </TableCell>
                 <TableCell>
-                  <Box sx={{ display: 'flex', alignItems: 'center'}}>
+                  <Box sx={styles.politicianBox}>
                     <Avatar
-                      sx={{ 
-                        width: 75, 
-                        height: 75, 
-                        mr: 1,
-                      }}
+                      sx={styles.avatar}
                       src={politician.photo}
                     >
                       {!politician.photo && politician.name.charAt(0)}

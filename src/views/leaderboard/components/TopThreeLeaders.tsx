@@ -1,19 +1,38 @@
 import React from 'react';
 import { Grid, Card, CardContent, Box, Avatar, Typography } from '@mui/material';
 import { EmojiEvents as TrophyIcon } from '@mui/icons-material';
-import { PoliticalFigure } from '../../../types/PoliticalFigure';
+import { PoliticalFigure } from '../../../entities/PoliticalFigure';
+
+const styles = {
+  card: {
+    borderRadius: 5, 
+    boxShadow: 2
+  },
+  profileBox: {
+    display: 'flex', 
+    alignItems: 'center', 
+    mb: 2
+  },
+  avatar: {
+    width: 90, 
+    height: 90
+  },
+  infoBox: {
+    ml: 2
+  },
+  trophyIcon: {
+    ml: 'auto',
+    width: 50,
+    height: 50
+  },
+  statsContainer: {
+    textAlign: 'center'
+  }
+};
 
 interface TopThreeLeadersProps {
   leaders: PoliticalFigure[];
 }
-
-const trophyStyles = {
-  largeIcon: {
-    width: 50,
-    height: 50,
-  },
-
-};
 
 export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => {
   const getTrophyColor = (index: number) => {
@@ -29,26 +48,28 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
     <Grid container spacing={5}>
       {leaders.map((politician, index) => (
         <Grid size={{ xs: 12, md: 4 }} key={politician.id}>
-          <Card sx={{ borderRadius: 5, boxShadow: 2}}>
+          <Card sx={styles.card}>
             <CardContent>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+              <Box sx={styles.profileBox}>
                 <Avatar
-                  sx={{ 
-                    width: 90, 
-                    height: 90,
+                  sx={{
+                    ...styles.avatar,
                     bgcolor: politician.photo ? 'transparent' : politician.politicalSideName
                   }}
                   src={politician.photo}
                 >
                   {!politician.photo}
                 </Avatar>
-                <Box sx={{ ml: 2 }}>
+                <Box sx={styles.infoBox}>
                   <Typography variant="h6">{politician.name}</Typography>
                   <Typography color="textSecondary">{politician.party}</Typography>
                 </Box>
-                <TrophyIcon sx={{ ml: 'auto', color: getTrophyColor(index), ...trophyStyles.largeIcon }} />
+                <TrophyIcon sx={{
+                  ...styles.trophyIcon,
+                  color: getTrophyColor(index)
+                }} />
               </Box>
-              <Grid container spacing={2} sx={{ textAlign: 'center' }}>
+              <Grid container spacing={2} sx={styles.statsContainer}>
                 <Grid size={{ xs: 4}}>
                   <Typography variant="h5">{politician.charges.length}</Typography>
                   <Typography variant="caption">CONDAMNATIONS</Typography>
