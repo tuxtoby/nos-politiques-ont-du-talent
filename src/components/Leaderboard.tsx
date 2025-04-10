@@ -40,6 +40,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
             id: party,
             name: party,
             party: party,
+            politicalSideName: politician.politicalSideName,
             politicalColor: politician.politicalColor,
             photo: '',
             charges: [],
@@ -61,14 +62,14 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
     } else {
       // Group by political color
       const groupedData = data.reduce((acc, politician) => {
-        const color = politician.politicalColor;
-        const side = Object.entries(politicalColors).find(([_, value]) => value === color)?.[0] || 'unknown';
+        const side = politician.politicalSideName;
         if (!acc[side]) {
           acc[side] = {
             id: side,
             name: side,
             party: side,
-            politicalColor: color,
+            politicalSideName: side,
+            politicalColor: politician.politicalColor,
             photo: '',
             charges: [],
             sentenceDuration: 0,

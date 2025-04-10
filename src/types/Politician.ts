@@ -9,7 +9,7 @@ export interface Sentence {
 export interface Politician {
     name: string;
     politicalGroup: string;
-    politicalSide: string;
+    politicalSide: number;
     photo: string;
     sentences: Sentence[];
 }

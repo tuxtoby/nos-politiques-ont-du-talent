@@ -26,7 +26,7 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
   };
 
   return (
-    <Grid container spacing={10}>
+    <Grid container spacing={5}>
       {leaders.map((politician, index) => (
         <Grid size={{ xs: 12, md: 4 }} key={politician.id}>
           <Card sx={{ borderRadius: 5, boxShadow: 2}}>
@@ -36,7 +36,7 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
                   sx={{ 
                     width: 90, 
                     height: 90,
-                    bgcolor: politician.photo ? 'transparent' : politician.politicalColor
+                    bgcolor: politician.photo ? 'transparent' : politician.politicalSideName
                   }}
                   src={politician.photo}
                 >

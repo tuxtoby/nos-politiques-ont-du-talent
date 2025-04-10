@@ -1,10 +1,11 @@
 import { Politician } from "../types/Politician";
+import politicalSide from "./politicalSide";
 
 export const data: Politician[] = [
     {
         "name": "Jean-Marie Lepen",
         "politicalGroup": "RN",
-        "politicalSide": "être",
+        "politicalSide": politicalSide.FAR_RIGHT,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Le_Pen_Jean-Marie_1999.jpg/1200px-Le_Pen_Jean-Marie_1999.jpg",
         "sentences": [
             {
@@ -26,7 +27,7 @@ export const data: Politician[] = [
     {
         "name": "Éric Zemmour",
         "politicalGroup": "Reconquête!",
-        "politicalSide": "far-right",
+        "politicalSide": politicalSide.FAR_RIGHT,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Le_Pen_Jean-Marie_1999.jpg/1200px-Le_Pen_Jean-Marie_1999.jpg",
         "sentences": [
             {
@@ -41,7 +42,7 @@ export const data: Politician[] = [
     {
         "name": "François Hollande",
         "politicalGroup": "PS",
-        "politicalSide": "left",
+        "politicalSide": politicalSide.LEFT,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Fran%C3%A7ois_Hollande_-_2017_%2827869823159%29_%28cropped_2%29.jpg/1200px-Fran%C3%A7ois_Hollande_-_2017_%2827869823159%29_%28cropped_2%29.jpg",
         "sentences": [
             {
@@ -62,7 +63,7 @@ export const data: Politician[] = [
     {
         "name": "Nicolas Sarkozy",
         "politicalGroup": "LR",
-        "politicalSide": "right",
+        "politicalSide": politicalSide.RIGHT,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Nicolas_Sarkozy_in_2010.jpg",
         "sentences": [
             {
@@ -91,7 +92,7 @@ export const data: Politician[] = [
     {
         "name": "Marine Le Pen",
         "politicalGroup": "RN",
-        "politicalSide": "far-right",
+        "politicalSide": politicalSide.FAR_RIGHT,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/e/e1/Le_Pen%2C_Marine-9586_%28cropped%29.jpg",
         "sentences": [
             {
@@ -113,7 +114,7 @@ export const data: Politician[] = [
     {
         "name": "Jean-Luc Mélenchon",
         "politicalGroup": "LFI",
-        "politicalSide": "far-left",
+        "politicalSide": politicalSide.FAR_LEFT,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Jean-Luc_MELENCHON_2016_2_%28cropped%29.jpg",
         "sentences": [
             {
@@ -135,7 +136,7 @@ export const data: Politician[] = [
     {
         "name": "Éric Woerth",
         "politicalGroup": "LR",
-        "politicalSide": "right",
+        "politicalSide": politicalSide.RIGHT,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/%C3%89ric_Woerth_2.jpg/1200px-%C3%89ric_Woerth_2.jpg",
         "sentences": [
             {
@@ -157,7 +158,7 @@ export const data: Politician[] = [
     {
         "name": "François Bayrou",
         "politicalGroup": "MoDem",
-        "politicalSide": "center",
+        "politicalSide": politicalSide.CENTER,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Fran%C3%A7ois_Bayrou_%28L%C3%A9gislatives_2024%29.jpg/250px-Fran%C3%A7ois_Bayrou_%28L%C3%A9gislatives_2024%29.jpg",
         "sentences": [
             {
@@ -179,7 +180,7 @@ export const data: Politician[] = [
     {
         "name": "Ségolène Royal",
         "politicalGroup": "PS",
-        "politicalSide": "left",
+        "politicalSide": politicalSide.LEFT,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/2/25/Royal_Toulouse_2012.JPG",
         "sentences": [
             {
@@ -201,7 +202,7 @@ export const data: Politician[] = [
     {
         "name": "Patrick Balkany",
         "politicalGroup": "LR",
-        "politicalSide": "right",
+        "politicalSide": politicalSide.RIGHT,
         "photo": "https://upload.wikimedia.org/wikipedia/commons/3/31/Resize_800px-Balkany_au_tribunal.jpg",
         "sentences": [
             {
@@ -230,7 +231,7 @@ export const data: Politician[] = [
     {
         "name": "Isabelle Balkany",
         "politicalGroup": "LR",
-        "politicalSide": "right",
+        "politicalSide": politicalSide.RIGHT,
         "photo": "https://images.rtl.fr/~c/2000v2000/rtl/www/1161675-isabelle-balkany-le-15-avril-2019.jpg",
         "sentences": [
             {

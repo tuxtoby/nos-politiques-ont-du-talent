@@ -43,13 +43,12 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politici
                   />
                 </TableCell>
                 <TableCell>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center'}}>
                     <Avatar
                       sx={{ 
                         width: 75, 
                         height: 75, 
                         mr: 1,
-                        bgcolor: politician.photo ? 'transparent' : politician.politicalColor
                       }}
                       src={politician.photo}
                     >
@@ -57,7 +56,7 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politici
                     </Avatar>
                     <Box>
                       <Typography variant="h6">{politician.name}</Typography>
-                      <Typography variant="caption" color="textSecondary">
+                      <Typography variant="caption" color={politician.politicalColor}>
                         {politician.party}
                       </Typography>
                     </Box>

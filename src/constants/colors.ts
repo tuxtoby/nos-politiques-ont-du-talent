@@ -1,7 +1,9 @@
-export const politicalColors: { [key: string]: string } = {
-  'far-right': '#000000',
-  'right': '#0000FF',
-  'center': '#FFA500',
-  'left': '#FF69B4',
-  'far-left': '#FF0000'
+import politicalSide from "../data/politicalSide";
+
+export const politicalColors: { [key: number]: string } = {
+  [politicalSide.FAR_RIGHT]: '#000000',
+  [politicalSide.RIGHT]: '#0000FF',
+  [politicalSide.CENTER]: '#FFA500',
+  [politicalSide.LEFT]: '#FF69B4',
+  [politicalSide.FAR_LEFT]: '#FF0000'
 };
