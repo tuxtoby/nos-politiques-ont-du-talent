@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { PoliticalFigure } from '../../../types/PoliticalFigure';
+import { PoliticalFigure } from '../../../entities/PoliticalFigure';
 
 type DisplayMode = 'general' | 'parti' | 'couleur';
 
@@ -85,8 +85,4 @@ function updateGroupEntity(groupEntity: PoliticalFigure, politician: PoliticalFi
   groupEntity.sentenceDuration += politician.sentenceDuration;
   groupEntity.fine += politician.fine;
   groupEntity.charges = Array.from(new Set([...groupEntity.charges, ...politician.charges]));
-}
-
-function calculateScore(politician: PoliticalFigure): number {
-  return politician.fine + (politician.sentenceDuration * 10000);
 }

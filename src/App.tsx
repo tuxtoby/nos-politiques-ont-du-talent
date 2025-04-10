@@ -1,6 +1,4 @@
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
-import { data } from './domains/political/data';
-import { transformPoliticians } from './services/politicianService';
 import Leaderboard from './views/leaderboard/Leaderboard';
 
 const styles = {
@@ -18,12 +16,10 @@ const styles = {
 };
 
 function App() {
-  const transformedData = transformPoliticians(data);
-  
   return (
     <ThemeProvider theme={styles.theme}>
       <CssBaseline />
-      <Leaderboard data={transformedData} />
+      <Leaderboard />
     </ThemeProvider>
   );
 }

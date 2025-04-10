@@ -10,7 +10,7 @@ export function transformPoliticians(politicians: Politician[]): PoliticalFigure
 export function transformPolitician(politician: Politician, index: number): PoliticalFigure {
   return {
     id: String(index + 1),
-    name: politician.name,
+    name: politician.first_name + " " + politician.last_name,
     party: politician.politicalGroup,
     politicalSideName: politicalSideNames[politician.politicalSide],
     politicalColor: politicalColors[politician.politicalSide],

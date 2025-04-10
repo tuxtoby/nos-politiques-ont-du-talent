@@ -6,12 +6,4 @@ export enum politicalSide {
     FAR_LEFT = 4
 }
 
-export const politicalSideNames: string[] = [
-    "Extrême droite",
-    "Droite",
-    "Centre",
-    "Gauche",
-    "Extrême gauche"
-];
-
 export default politicalSide;

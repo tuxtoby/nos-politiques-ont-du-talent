@@ -7,7 +7,8 @@ export interface Sentence {
 }
 
 export interface Politician {
-    name: string;
+    first_name: string;
+    last_name: string;
     politicalGroup: string;
     politicalSide: number;
     photo: string;

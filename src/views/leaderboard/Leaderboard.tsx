@@ -1,11 +1,11 @@
 import React from 'react';
-import { Box, Typography, ToggleButtonGroup, ToggleButton } from '@mui/material';
-import { PoliticalFigure } from '../../types/PoliticalFigure';
+import { Box, Typography, ToggleButtonGroup, ToggleButton, CircularProgress } from '@mui/material';
 import { StatsCards } from './components/StatsCards';
 import { TopThreeLeaders } from './components/TopThreeLeaders';
 import { GlobalRankingTable } from './components/GlobalRankingTable';
 import { LeaderboardHeader } from './components/LeaderboardHeader';
 import { useLeaderboard } from './hooks/useLeaderboard';
+import { useSupabaseData } from '../../hooks/useSupabaseData';
 
 const styles = {
   container: {
@@ -31,15 +31,41 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     mb: 2
+  },
+  loadingContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '50vh'
+  },
+  errorMessage: {
+    color: 'error.main',
+    textAlign: 'center',
+    my: 4
   }
 };
 
-interface LeaderboardProps {
-  data: PoliticalFigure[];
-}
+const Leaderboard: React.FC = () => {
+  const { politicalFigures, loading, error } = useSupabaseData();
+  const { displayMode, handleDisplayModeChange, sortedPoliticians, topThree } = useLeaderboard(politicalFigures);
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
-  const { displayMode, handleDisplayModeChange, sortedPoliticians, topThree } = useLeaderboard(data);
+  if (loading) {
+    return (
+      <Box sx={styles.loadingContainer}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box sx={styles.container}>
+        <Typography variant="h5" sx={styles.errorMessage}>
+          {error}
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <Box sx={styles.container}>
@@ -67,7 +93,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ data }) => {
         </ToggleButtonGroup>
       </Box>
       
-      <StatsCards data={data} />
+      <StatsCards data={politicalFigures} />
 
       <Box sx={styles.topThreeSection}>
         <Box sx={styles.topThreeHeader}>
