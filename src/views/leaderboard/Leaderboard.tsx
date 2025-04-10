@@ -8,6 +8,7 @@ import { useLeaderboard } from './hooks/useLeaderboard';
 import { useSupabaseData } from '../../hooks/useSupabaseData';
 import { ActionButton } from '../../components/ActionButton';
 import { AddPoliticianDialog } from './components/AddPoliticianDialog';
+import { AddSentenceDialog } from './components/AddSentenceDialog';
 
 const styles = {
   container: {
@@ -51,21 +52,29 @@ const Leaderboard: React.FC = () => {
   const { politicalFigures, loading, error, refetch } = useSupabaseData();
   const { displayMode, handleDisplayModeChange, sortedPoliticians, topThree } = useLeaderboard(politicalFigures);
   const [openPoliticianDialog, setOpenPoliticianDialog] = useState(false);
+  const [openSentenceDialog, setOpenSentenceDialog] = useState(false);
   
   const handleAddPolitician = () => {
     setOpenPoliticianDialog(true);
   };
 
   const handleAddSentence = () => {
-    // TODO: Implement navigation or modal for adding a sentence
-    console.log('Add sentence clicked');
+    setOpenSentenceDialog(true);
   };
 
   const handlePoliticianDialogClose = () => {
     setOpenPoliticianDialog(false);
   };
 
+  const handleSentenceDialogClose = () => {
+    setOpenSentenceDialog(false);
+  };
+
   const handlePoliticianAdded = () => {
+    refetch();
+  };
+
+  const handleSentenceAdded = () => {
     refetch();
   };
 
@@ -136,6 +145,12 @@ const Leaderboard: React.FC = () => {
         open={openPoliticianDialog}
         onClose={handlePoliticianDialogClose}
         onSuccess={handlePoliticianAdded}
+      />
+      
+      <AddSentenceDialog
+        open={openSentenceDialog}
+        onClose={handleSentenceDialogClose}
+        onSuccess={handleSentenceAdded}
       />
     </Box>
   );
