@@ -121,7 +121,7 @@ export async function fetchPoliticians(): Promise<Politician[]> {
 
       return {
         id: politician.id,
-        name: politician.first_name + politician.last_name,
+        name: politician.first_name + ' ' + politician.last_name,
         party: partyEntity,
         photo: politician.photo_url || '',
         sentences: politicianSentences
