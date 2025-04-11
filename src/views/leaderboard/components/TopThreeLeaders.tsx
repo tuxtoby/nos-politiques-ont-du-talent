@@ -1,6 +1,9 @@
 import React from 'react';
-import { Grid, Card, CardContent, Box, Avatar, Typography } from '@mui/material';
+import { Grid, Card, CardContent, Box, Avatar, Typography, Chip, Stack } from '@mui/material';
 import { EmojiEvents as TrophyIcon } from '@mui/icons-material';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import EventIcon from '@mui/icons-material/Event';
 import { LeaderboardData } from '../adapters/LeaderboardData';
 import { politicalColors } from '../../../constants/colors';
 import { PoliticalSide } from '../../../entities/PoliticalSide';
@@ -39,6 +42,37 @@ const styles = {
   },
   statsContainer: {
     textAlign: 'center'
+  },
+  fineChip: {
+    backgroundColor: '#e3f2fd',
+    color: '#0277bd',
+    fontWeight: 'bold',
+    '& .MuiChip-icon': {
+      color: '#0277bd'
+    }
+  },
+  prisonChip: {
+    backgroundColor: '#fce4ec',
+    color: '#c2185b',
+    fontWeight: 'bold',
+    '& .MuiChip-icon': {
+      color: '#c2185b'
+    }
+  },
+  sentencesChip: {
+    backgroundColor: '#e8f5e9',
+    color: '#2e7d32',
+    fontWeight: 'bold',
+    '& .MuiChip-icon': {
+      color: '#2e7d32'
+    }
+  },
+  chipsContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    gap: 1,
+    mt: 2
   }
 };
 
@@ -105,20 +139,30 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({
                   color: getTrophyColor(index)
                 }} />
               </Box>
-              <Grid container spacing={2} sx={styles.statsContainer}>
-                <Grid size={{ xs: 4}}>
-                  <Typography variant="h5">{leader.numberOfSentences}</Typography>
-                  <Typography variant="caption">CONDAMNATIONS</Typography>
-                </Grid>
-                <Grid size={{ xs: 4}}>
-                  <Typography variant="h5">{leader.totalPrisonTime}</Typography>
-                  <Typography variant="caption">MOIS DE PRISON</Typography>
-                </Grid>
-                <Grid size={{ xs: 4}}>
-                  <Typography variant="h5">{leader.totalFine.toLocaleString()} €</Typography>
-                  <Typography variant="caption">D'AMENDE</Typography>
-                </Grid>
-              </Grid>
+              <Stack sx={styles.chipsContainer} direction="row" spacing={1}>
+                <Chip 
+                  icon={<EventIcon />}
+                  label={`${leader.numberOfSentences} condamnation${leader.numberOfSentences > 1 ? 's' : ''}`}
+                  size="small"
+                  sx={styles.sentencesChip}
+                />
+                {leader.totalPrisonTime > 0 && (
+                  <Chip 
+                    icon={<AccessTimeIcon />}
+                    label={`${leader.totalPrisonTime} mois`}
+                    size="small"
+                    sx={styles.prisonChip}
+                  />
+                )}
+                {leader.totalFine > 0 && (
+                  <Chip 
+                    icon={<AttachMoneyIcon />}
+                    label={`${leader.totalFine.toLocaleString()} €`}
+                    size="small"
+                    sx={styles.fineChip}
+                  />
+                )}
+              </Stack>
             </CardContent>
           </Card>
         </Grid>

@@ -149,6 +149,14 @@ const styles = {
       color: '#c2185b'
     }
   },
+  sentencesChip: {
+    backgroundColor: '#e8f5e9',
+    color: '#2e7d32',
+    fontWeight: 'bold',
+    '& .MuiChip-icon': {
+      color: '#2e7d32'
+    }
+  },
   totalChips: {
     display: 'flex',
     gap: 1
@@ -277,10 +285,13 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
       {sentences.length > 0 ? (
         <>
           <Box sx={styles.sentenceCount}>
-            <Typography variant="body1">
-              {sentences.length} condamnation{sentences.length > 1 ? 's' : ''}
-            </Typography>
             <Stack direction="row" spacing={1}>
+              <Chip 
+                icon={<EventIcon />}
+                label={`${sentences.length} condamnation${sentences.length > 1 ? 's' : ''}`}
+                size="small"
+                sx={styles.sentencesChip}
+              />
               {totalPrisonTime > 0 && (
                 <Chip 
                   icon={<AccessTimeIcon />}
