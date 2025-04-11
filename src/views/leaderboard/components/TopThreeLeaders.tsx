@@ -2,6 +2,8 @@ import React from 'react';
 import { Grid, Card, CardContent, Box, Avatar, Typography } from '@mui/material';
 import { EmojiEvents as TrophyIcon } from '@mui/icons-material';
 import { LeaderboardData } from '../adapters/LeaderboardData';
+import { politicalColors } from '../../../constants/colors';
+import { PoliticalSide } from '../../../entities/PoliticalSide';
 
 const styles = {
   card: {
@@ -44,6 +46,17 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
     }
   };
 
+  const getAvatarBackgroundColor = (leader: LeaderboardData) => {
+    if (leader.logo_url) return undefined;
+    
+    if ('id' in leader.politicalEntity && typeof leader.politicalEntity.id === 'number') {
+      const politicalSide = leader.politicalEntity as PoliticalSide;
+      return politicalColors[politicalSide.id];
+    }
+    
+    return '#808080'; // Default gray color for non-political side entities
+  };
+
   return (
     <Grid container spacing={5}>
       {leaders.map((leader, index) => (
@@ -53,10 +66,12 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
               <Box sx={styles.profileBox}>
                 <Avatar
                   sx={{
-                    ...styles.avatar
+                    ...styles.avatar,
+                    bgcolor: getAvatarBackgroundColor(leader)
                   }}
                   src={leader.logo_url}
                 >
+                  {!leader.logo_url && leader.name.charAt(0)}
                 </Avatar>
                 <Box sx={styles.infoBox}>
                   <Typography variant="h6">{leader.name}</Typography>

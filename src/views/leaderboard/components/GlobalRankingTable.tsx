@@ -13,6 +13,8 @@ import {
   Chip
 } from '@mui/material';
 import { LeaderboardData } from '../adapters/LeaderboardData';
+import { politicalColors } from '../../../constants/colors';
+import { PoliticalSide } from '../../../entities/PoliticalSide';
 
 const styles = {
   politicianBox: {
@@ -31,6 +33,17 @@ interface GlobalRankingTableProps {
 }
 
 export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ leaderboardData }) => {
+  const getAvatarBackgroundColor = (data: LeaderboardData) => {
+    if (data.logo_url) return undefined;
+    
+    if ('id' in data.politicalEntity && typeof data.politicalEntity.id === 'number') {
+      const politicalSide = data.politicalEntity as PoliticalSide;
+      return politicalColors[politicalSide.id];
+    }
+    
+    return '#808080'; // Default gray color for non-political side entities
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -57,9 +70,13 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ leaderbo
                 <TableCell>
                   <Box sx={styles.politicianBox}>
                     <Avatar
-                      sx={styles.avatar}
+                      sx={{
+                        ...styles.avatar,
+                        bgcolor: getAvatarBackgroundColor(data)
+                      }}
                       src={data.logo_url}
                     >
+                      {!data.logo_url && data.name.charAt(0)}
                     </Avatar>
                     <Box>
                       <Typography variant="h6">{data.name}</Typography>
