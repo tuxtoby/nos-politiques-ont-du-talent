@@ -97,7 +97,7 @@ function createLeaderboardDataFromPolitician(politician: Politician): Leaderboar
   return {
     id: politician.id,
     name: politician.name,
-    caption: politician.party?.name || '',
+    caption: politician.party?.name + ' (' + politician.party?.abbreviation + ')' || '',
     politicalEntity: politician,
     logo_url: politician.photo || '',
     numberOfSentences: politician.sentences.length,
