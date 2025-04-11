@@ -1,16 +1,10 @@
-export interface Sentence {
-    type: string;
-    fine: number;
-    prisonTime: number;
-    date: string;
-    source?: string;
-}
+import { Sentence } from "./Sentence";
+import { Party } from "./Party";
 
 export interface Politician {
-    first_name: string;
-    last_name: string;
-    politicalGroup: string;
-    politicalSide: number;
+    id: string;
+    name: string;
+    party: Party;
     photo: string;
     sentences: Sentence[];
 }

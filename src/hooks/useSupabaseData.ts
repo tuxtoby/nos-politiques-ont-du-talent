@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react';
-import { PoliticalFigure } from '../entities/PoliticalFigure';
-import { getPoliticalFigures } from '../services/supabaseService';
+import { Politician } from '../entities/Politician';
+import { fetchPoliticians } from '../services/supabaseService';
 
 export function useSupabaseData() {
-  const [politicalFigures, setPoliticalFigures] = useState<PoliticalFigure[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [politicians, setPoliticians] = useState<Politician[]>([]);
+  const [supabaseLoading, setSupabaseLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   async function fetchData() {
     try {
-      setLoading(true);
-      const figures = await getPoliticalFigures();
-      setPoliticalFigures(figures);
+      setSupabaseLoading(true);
+      const politicians = await fetchPoliticians();
+      setPoliticians(politicians);
       setError(null);
     } catch (err) {
       setError('Failed to fetch data from Supabase');
       console.error('Error fetching data:', err);
     } finally {
-      setLoading(false);
+      setSupabaseLoading(false);
     }
   }
 
@@ -26,8 +26,8 @@ export function useSupabaseData() {
   }, []);
 
   return {
-    politicalFigures,
-    loading,
+    politicians,
+    supabaseLoading,
     error,
     refetch: fetchData
   };

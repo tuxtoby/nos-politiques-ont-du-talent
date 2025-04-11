@@ -12,7 +12,7 @@ import {
   Typography,
   Chip
 } from '@mui/material';
-import { PoliticalFigure } from '../../../entities/PoliticalFigure';
+import { LeaderboardData } from '../adapters/LeaderboardData';
 
 const styles = {
   politicianBox: {
@@ -27,10 +27,10 @@ const styles = {
 };
 
 interface GlobalRankingTableProps {
-  politicians: PoliticalFigure[];
+  leaderboardData: LeaderboardData[];
 }
 
-export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politicians }) => {
+export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ leaderboardData }) => {
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -44,9 +44,9 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politici
           </TableRow>
         </TableHead>
         <TableBody>
-          {politicians.map((politician, index) => {
+          {leaderboardData.map((data, index) => {
             return (
-              <TableRow key={politician.id}>
+              <TableRow key={data.id}>
                 <TableCell>
                   <Chip 
                     label={index + 1} 
@@ -58,21 +58,20 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ politici
                   <Box sx={styles.politicianBox}>
                     <Avatar
                       sx={styles.avatar}
-                      src={politician.photo}
+                      src={data.logo_url}
                     >
-                      {!politician.photo && politician.name.charAt(0)}
                     </Avatar>
                     <Box>
-                      <Typography variant="h6">{politician.name}</Typography>
-                      <Typography variant="caption" color={politician.politicalColor}>
-                        {politician.party}
+                      <Typography variant="h6">{data.name}</Typography>
+                      <Typography variant="caption">
+                        {data.caption}
                       </Typography>
                     </Box>
                   </Box>
                 </TableCell>
-                <TableCell>{politician.charges.length}</TableCell>
-                <TableCell>{politician.sentenceDuration} mois</TableCell>
-                <TableCell>{politician.fine.toLocaleString()} €</TableCell>
+                <TableCell>{data.numberOfSentences}</TableCell>
+                <TableCell>{data.totalPrisonTime} mois</TableCell>
+                <TableCell>{data.totalFine.toLocaleString()} €</TableCell>
               </TableRow>
             );
           })}

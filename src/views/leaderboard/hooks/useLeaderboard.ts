@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { PoliticalFigure } from '../../../entities/PoliticalFigure';
+import { Politician } from '../../../entities/Politician';
+import { LeaderboardData } from '../adapters/LeaderboardData';
+import { Party } from '../../../entities/Party';
+import { PoliticalSide } from '../../../entities/PoliticalSide';
 
 type DisplayMode = 'general' | 'parti' | 'couleur';
 
-export function useLeaderboard(data: PoliticalFigure[]) {
+export function useLeaderboard(data: Politician[]) {
   const [displayMode, setDisplayMode] = useState<DisplayMode>('general');
 
   const handleDisplayModeChange = (
@@ -15,18 +18,18 @@ export function useLeaderboard(data: PoliticalFigure[]) {
     }
   };
 
-  const sortedPoliticians = processData(data, displayMode);
-  const topThree = sortedPoliticians.slice(0, 3);
+  const leaderboardData = processData(data, displayMode);
+  const topThree = leaderboardData.slice(0, 3);
 
   return {
     displayMode,
     handleDisplayModeChange,
-    sortedPoliticians,
+    leaderboardData,
     topThree
   };
 }
 
-function processData(data: PoliticalFigure[], displayMode: DisplayMode): PoliticalFigure[] {
+function processData(data: Politician[], displayMode: DisplayMode): LeaderboardData[] {
   if (displayMode === 'general') {
     return processGeneralData(data);
   } else if (displayMode === 'parti') {
@@ -36,53 +39,115 @@ function processData(data: PoliticalFigure[], displayMode: DisplayMode): Politic
   }
 }
 
-function processGeneralData(data: PoliticalFigure[]): PoliticalFigure[] {
-  return [...data].sort(sortPoliticians);
+function processGeneralData(data: Politician[]): LeaderboardData[] {
+  return data.map(politician => createLeaderboardDataFromPolitician(politician))
+    .sort(sortLeaderboardData);
 }
 
-function processPartyData(data: PoliticalFigure[]): PoliticalFigure[] {
-  const groupedData = groupDataByProperty(data, 'party');
-  return Object.values(groupedData).sort(sortPoliticians);
+function processPartyData(data: Politician[]): LeaderboardData[] {
+  const groupedData = groupDataByParty(data);
+  return Object.values(groupedData).sort(sortLeaderboardData);
 }
 
-function processPoliticalSideData(data: PoliticalFigure[]): PoliticalFigure[] {
-  const groupedData = groupDataByProperty(data, 'politicalSideName');
-  return Object.values(groupedData).sort(sortPoliticians);
+function processPoliticalSideData(data: Politician[]): LeaderboardData[] {
+  const groupedData = groupDataByPoliticalSide(data);
+  return Object.values(groupedData).sort(sortLeaderboardData);
 }
 
-function groupDataByProperty(data: PoliticalFigure[], property: 'party' | 'politicalSideName'): Record<string, PoliticalFigure> {
+function groupDataByParty(data: Politician[]): Record<string, LeaderboardData> {
   return data.reduce((acc, politician) => {
-    const key = politician[property];
-    if (!acc[key]) {
-      acc[key] = createGroupEntity(politician, key);
+    const partyId = politician.party?.id;
+    if (!partyId) return acc;
+    
+    if (!acc[partyId]) {
+      acc[partyId] = createLeaderboardDataFromParty(politician.party);
     }
-    updateGroupEntity(acc[key], politician);
+    
+    updatePartyLeaderboardData(acc[partyId], politician);
     return acc;
-  }, {} as Record<string, PoliticalFigure>);
+  }, {} as Record<string, LeaderboardData>);
 }
 
-function sortPoliticians(a: PoliticalFigure, b: PoliticalFigure): number {
-  const scoreA = a.charges.length;
-  const scoreB = b.charges.length;
+function groupDataByPoliticalSide(data: Politician[]): Record<string, LeaderboardData> {
+  return data.reduce((acc, politician) => {
+    const politicalSide = politician.party?.politicalSide;
+    if (!politicalSide) return acc;
+    
+    const sideId = String(politicalSide.id);
+    
+    if (!acc[sideId]) {
+      acc[sideId] = createLeaderboardDataFromPoliticalSide(politicalSide);
+    }
+    
+    updatePoliticalSideLeaderboardData(acc[sideId], politician);
+    return acc;
+  }, {} as Record<string, LeaderboardData>);
+}
+
+function sortLeaderboardData(a: LeaderboardData, b: LeaderboardData): number {
+  const scoreA = a.numberOfSentences || 0;
+  const scoreB = b.numberOfSentences || 0;
   return scoreB - scoreA;
 }
 
-function createGroupEntity(politician: PoliticalFigure, key: string): PoliticalFigure {
+function createLeaderboardDataFromPolitician(politician: Politician): LeaderboardData {
+  const totalPrisonTime = calculateTotalPrisonTime(politician.sentences);
+  const totalFine = calculateTotalFine(politician.sentences);
+  
   return {
-    id: key,
-    name: key,
-    party: key,
-    politicalSideName: politician.politicalSideName,
-    politicalColor: politician.politicalColor,
-    photo: '',
-    charges: [],
-    sentenceDuration: 0,
-    fine: 0
+    id: politician.id,
+    name: politician.name,
+    caption: politician.party?.name || '',
+    politicalEntity: politician,
+    logo_url: politician.photo || '',
+    numberOfSentences: politician.sentences.length,
+    totalPrisonTime,
+    totalFine
   };
 }
 
-function updateGroupEntity(groupEntity: PoliticalFigure, politician: PoliticalFigure): void {
-  groupEntity.sentenceDuration += politician.sentenceDuration;
-  groupEntity.fine += politician.fine;
-  groupEntity.charges = Array.from(new Set([...groupEntity.charges, ...politician.charges]));
+function createLeaderboardDataFromParty(party: Party): LeaderboardData {
+  return {
+    id: party.id,
+    name: party.name,
+    caption: party.abbreviation || '',
+    politicalEntity: party,
+    logo_url: party.logo_url || '',
+    numberOfSentences: 0,
+    totalPrisonTime: 0,
+    totalFine: 0
+  };
+}
+
+function createLeaderboardDataFromPoliticalSide(politicalSide: PoliticalSide): LeaderboardData {
+  return {
+    id: String(politicalSide.id),
+    name: politicalSide.name,
+    caption: '',
+    politicalEntity: politicalSide,
+    logo_url: '',
+    numberOfSentences: 0,
+    totalPrisonTime: 0,
+    totalFine: 0
+  };
+}
+
+function updatePartyLeaderboardData(leaderboardData: LeaderboardData, politician: Politician): void {
+  leaderboardData.numberOfSentences += politician.sentences.length;
+  leaderboardData.totalPrisonTime += calculateTotalPrisonTime(politician.sentences);
+  leaderboardData.totalFine += calculateTotalFine(politician.sentences);
+}
+
+function updatePoliticalSideLeaderboardData(leaderboardData: LeaderboardData, politician: Politician): void {
+  leaderboardData.numberOfSentences += politician.sentences.length;
+  leaderboardData.totalPrisonTime += calculateTotalPrisonTime(politician.sentences);
+  leaderboardData.totalFine += calculateTotalFine(politician.sentences);
+}
+
+function calculateTotalPrisonTime(sentences: Politician['sentences']): number {
+  return sentences.reduce((total, sentence) => total + (sentence.prisonTime || 0), 0);
+}
+
+function calculateTotalFine(sentences: Politician['sentences']): number {
+  return sentences.reduce((total, sentence) => total + (sentence.fine || 0), 0);
 }

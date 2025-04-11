@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Card, CardContent, Box, Avatar, Typography } from '@mui/material';
 import { EmojiEvents as TrophyIcon } from '@mui/icons-material';
-import { PoliticalFigure } from '../../../entities/PoliticalFigure';
+import { LeaderboardData } from '../adapters/LeaderboardData';
 
 const styles = {
   card: {
@@ -31,7 +31,7 @@ const styles = {
 };
 
 interface TopThreeLeadersProps {
-  leaders: PoliticalFigure[];
+  leaders: LeaderboardData[];
 }
 
 export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => {
@@ -46,23 +46,21 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
 
   return (
     <Grid container spacing={5}>
-      {leaders.map((politician, index) => (
-        <Grid size={{ xs: 12, md: 4 }} key={politician.id}>
+      {leaders.map((leader, index) => (
+        <Grid size={{ xs: 12, md: 4 }} key={leader.id}>
           <Card sx={styles.card}>
             <CardContent>
               <Box sx={styles.profileBox}>
                 <Avatar
                   sx={{
-                    ...styles.avatar,
-                    bgcolor: politician.photo ? 'transparent' : politician.politicalSideName
+                    ...styles.avatar
                   }}
-                  src={politician.photo}
+                  src={leader.logo_url}
                 >
-                  {!politician.photo}
                 </Avatar>
                 <Box sx={styles.infoBox}>
-                  <Typography variant="h6">{politician.name}</Typography>
-                  <Typography color="textSecondary">{politician.party}</Typography>
+                  <Typography variant="h6">{leader.name}</Typography>
+                  <Typography color="textSecondary">{leader.caption}</Typography>
                 </Box>
                 <TrophyIcon sx={{
                   ...styles.trophyIcon,
@@ -71,15 +69,15 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
               </Box>
               <Grid container spacing={2} sx={styles.statsContainer}>
                 <Grid size={{ xs: 4}}>
-                  <Typography variant="h5">{politician.charges.length}</Typography>
+                  <Typography variant="h5">{leader.numberOfSentences}</Typography>
                   <Typography variant="caption">CONDAMNATIONS</Typography>
                 </Grid>
                 <Grid size={{ xs: 4}}>
-                  <Typography variant="h5">{politician.sentenceDuration}</Typography>
+                  <Typography variant="h5">{leader.totalPrisonTime}</Typography>
                   <Typography variant="caption">MOIS DE PRISON</Typography>
                 </Grid>
                 <Grid size={{ xs: 4}}>
-                  <Typography variant="h5">{politician.fine.toLocaleString()} €</Typography>
+                  <Typography variant="h5">{leader.totalFine.toLocaleString()} €</Typography>
                   <Typography variant="caption">D'AMENDE</Typography>
                 </Grid>
               </Grid>

@@ -1,6 +1,7 @@
 import { ThemeProvider, CssBaseline, createTheme, CircularProgress, Box } from '@mui/material';
 import Leaderboard from './views/leaderboard/Leaderboard';
 import { useAuthInitialization } from './views/hooks/useAuthInitialization';
+import { useSupabaseData } from './hooks/useSupabaseData';
 
 const styles = {
   theme: createTheme({
@@ -25,8 +26,9 @@ const styles = {
 
 function App() {
   const { authInitialized, loading } = useAuthInitialization();
+  const { politicians, supabaseLoading, refetch } = useSupabaseData();
 
-  if (loading) {
+  if (loading || supabaseLoading) {
     return (
       <ThemeProvider theme={styles.theme}>
         <CssBaseline />
@@ -51,7 +53,7 @@ function App() {
   return (
     <ThemeProvider theme={styles.theme}>
       <CssBaseline />
-      <Leaderboard />
+      <Leaderboard politicians={politicians} refetch={refetch} />
     </ThemeProvider>
   );
 }

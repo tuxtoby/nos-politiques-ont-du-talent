@@ -1,74 +1,136 @@
+import { Politician } from '../entities/Politician';
+import { Party } from '../entities/Party';
+import { Sentence } from '../entities/Sentence';
 import { supabase } from '../utils/supabase';
-import { Politician, Sentence } from '../entities/Politician';
-import { PoliticalFigure } from '../entities/PoliticalFigure';
-import { politicalSideNames } from '../entities/PoliticalSide';
-import { politicalColors } from '../domains/political/colors';
-import { getCurrentUser, signInAnonymously } from './authService';
-import { PoliticianDto } from './dto/PoliticianDto';
-import { SentenceDto } from './dto/SentenceDto';
-import { PartyDto } from './dto/PartyDto';
-import { PoliticalSideDto } from './dto/PoliticalSideDto';
+import { signInAnonymously } from './authService';
+import { PoliticianDto, SentenceDto, PartyDto, PartyFamilyDto, PoliticalSideDto } from './dto';
 
 export async function fetchPoliticians(): Promise<Politician[]> {
-  const { data: politiciansData, error: politiciansError } = await supabase
-    .from('politicians')
-    .select('*');
+  try {
+    // Fetch all politicians
+    const { data: politiciansData, error: politiciansError } = await supabase
+      .from('politicians')
+      .select('*');
 
-  if (politiciansError) {
-    console.error('Error fetching politicians:', politiciansError);
-    return [];
-  }
-
-  const politicians = politiciansData as PoliticianDto[];
-  const politiciansWithSentences: Politician[] = [];
-
-  for (const politician of politicians) {
-    const { data: sentencesData, error: sentencesError } = await supabase
-      .from('sentences')
-      .select('*')
-      .eq('politician_id', politician.id);
-
-    if (sentencesError) {
-      console.error(`Error fetching sentences for politician ${politician.id}:`, sentencesError);
-      continue;
+    if (politiciansError) {
+      console.error('Error fetching politicians:', politiciansError);
+      return [];
     }
 
+    // Fetch all parties
+    const { data: partiesData, error: partiesError } = await supabase
+      .from('political_parties')
+      .select('*');
+
+    if (partiesError) {
+      console.error('Error fetching parties:', partiesError);
+      return [];
+    }
+
+    // Fetch all party families
+    const { data: familiesData, error: familiesError } = await supabase
+      .from('political_party_families')
+      .select('*');
+
+    if (familiesError) {
+      console.error('Error fetching party families:', familiesError);
+      return [];
+    }
+
+    // Fetch all political sides
+    const { data: sidesData, error: sidesError } = await supabase
+      .from('political_sides')
+      .select('*');
+
+    if (sidesError) {
+      console.error('Error fetching political sides:', sidesError);
+      return [];
+    }
+
+    // Fetch all sentences
+    const { data: sentencesData, error: sentencesError } = await supabase
+      .from('sentences')
+      .select('*');
+
+    if (sentencesError) {
+      console.error('Error fetching sentences:', sentencesError);
+      return [];
+    }
+
+    const politicians = politiciansData as PoliticianDto[];
+    const parties = partiesData as PartyDto[];
+    const families = familiesData as PartyFamilyDto[];
+    const sides = sidesData as PoliticalSideDto[];
     const sentences = sentencesData as SentenceDto[];
-    const formattedSentences: Sentence[] = sentences.map(sentence => ({
-      type: sentence.type,
-      fine: sentence.fine,
-      prisonTime: sentence.prison_time,
-      date: sentence.date,
-      source: sentence.source_url
-    }));
 
-    politiciansWithSentences.push({
-      first_name: politician.first_name,
-      last_name: politician.last_name,
-      politicalGroup: await getPartyName(politician.party_id),
-      politicalSide: politician.political_side_id,
-      photo: politician.photo_url || '',
-      sentences: formattedSentences
-    });
+    // Map the data to create Politician entities
+    return politicians.map(politician => {
+      // Find the party for this politician
+      const party = parties.find(p => p.id === politician.party_id);
+      
+      if (!party) {
+        console.error(`Party not found for politician ${politician.id}`);
+        return null;
+      }
+
+      // Find the party family for this party
+      const family = families.find(f => f.id === party.family_id);
+      
+      if (!family) {
+        console.error(`Party family not found for party ${party.id}`);
+        return null;
+      }
+
+      // Find the political side for this party
+      const side = sides.find(s => s.id === party.political_side_id);
+      
+      if (!side) {
+        console.error(`Political side not found for party ${party.id}`);
+        return null;
+      }
+
+      // Find all sentences for this politician
+      const politicianSentences = sentences
+        .filter(s => s.politician_id === politician.id)
+        .map(sentence => ({
+          type: sentence.type,
+          fine: sentence.fine,
+          prisonTime: sentence.prison_time,
+          date: sentence.date,
+          source: sentence.source_url
+        }));
+
+      // Create the Party entity
+      const partyEntity: Party = {
+        id: party.id,
+        name: party.name,
+        abbreviation: party.abbreviation,
+        family: {
+          id: family.id,
+          name: family.name,
+          description: family.description
+        },
+        politicalSide: {
+          id: side.id,
+          name: side.name
+        },
+        logo_url: party.logo_url,
+        start_date: party.start_date,
+        end_date: party.end_date
+      };
+
+      return {
+        id: politician.id,
+        name: politician.first_name + politician.last_name,
+        party: partyEntity,
+        photo: politician.photo_url || '',
+        sentences: politicianSentences
+      };
+    }).filter(politician => politician !== null) as Politician[];
+  } catch (error) {
+    console.error('Error in fetchPoliticians:', error);
+    return [];
   }
-
-  return politiciansWithSentences;
-}
-
-export async function getPoliticalFigures(): Promise<PoliticalFigure[]> {
-  const politicians = await fetchPoliticians();
-  
-  return politicians.map((politician, index) => ({
-    id: String(index + 1),
-    name: `${politician.first_name} ${politician.last_name}`,
-    party: politician.politicalGroup,
-    politicalSideName: politicalSideNames[politician.politicalSide],
-    politicalColor: politicalColors[politician.politicalSide],
-    photo: politician.photo,
-    charges: politician.sentences.map(sentence => sentence.type),
-    sentenceDuration: politician.sentences.reduce((total, sentence) => total + sentence.prisonTime, 0),
-    fine: politician.sentences.reduce((total, sentence) => total + sentence.fine, 0)
-  }));
 }
 
 export async function fetchPoliticalSides(): Promise<PoliticalSideDto[]> {
@@ -222,14 +284,14 @@ export async function createSentence(
 
 async function getPartyName(partyId: string): Promise<string> {
   const { data, error } = await supabase
-    .from('parties')
+    .from('political_parties')
     .select('name')
     .eq('id', partyId)
     .single();
 
-  if (error) {
-    console.error(`Error fetching party name for party ${partyId}:`, error);
-    return '';
+  if (error || !data) {
+    console.error(`Error fetching party name for ID ${partyId}:`, error);
+    return 'Unknown Party';
   }
 
   return data.name;

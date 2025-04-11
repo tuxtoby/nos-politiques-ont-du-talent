@@ -5,10 +5,10 @@ import { TopThreeLeaders } from './components/TopThreeLeaders';
 import { GlobalRankingTable } from './components/GlobalRankingTable';
 import { LeaderboardHeader } from './components/LeaderboardHeader';
 import { useLeaderboard } from './hooks/useLeaderboard';
-import { useSupabaseData } from '../../hooks/useSupabaseData';
 import { ActionButton } from '../../components/ActionButton';
 import { AddPoliticianDialog } from './components/AddPoliticianDialog';
 import { AddSentenceDialog } from './components/AddSentenceDialog';
+import { Politician } from '../../entities/Politician';
 
 const styles = {
   container: {
@@ -34,23 +34,16 @@ const styles = {
     justifyContent: 'space-between',
     alignItems: 'center',
     mb: 2
-  },
-  loadingContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: '50vh'
-  },
-  errorMessage: {
-    color: 'error.main',
-    textAlign: 'center',
-    my: 4
   }
 };
 
-const Leaderboard: React.FC = () => {
-  const { politicalFigures, loading, error, refetch } = useSupabaseData();
-  const { displayMode, handleDisplayModeChange, sortedPoliticians, topThree } = useLeaderboard(politicalFigures);
+interface LeaderboardProps {
+  politicians: Politician[];
+  refetch: () => void;
+}
+
+const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
+  const { displayMode, handleDisplayModeChange, leaderboardData, topThree } = useLeaderboard(politicians);
   const [openPoliticianDialog, setOpenPoliticianDialog] = useState(false);
   const [openSentenceDialog, setOpenSentenceDialog] = useState(false);
   
@@ -78,24 +71,6 @@ const Leaderboard: React.FC = () => {
     refetch();
   };
 
-  if (loading) {
-    return (
-      <Box sx={styles.loadingContainer}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (error) {
-    return (
-      <Box sx={styles.container}>
-        <Typography variant="h5" sx={styles.errorMessage}>
-          {error}
-        </Typography>
-      </Box>
-    );
-  }
-
   return (
     <Box sx={styles.container}>
       <Typography variant="h4" sx={styles.title}>
@@ -122,7 +97,7 @@ const Leaderboard: React.FC = () => {
         </ToggleButtonGroup>
       </Box>
       
-      <StatsCards data={politicalFigures} />
+      <StatsCards data={leaderboardData} />
 
       <Box sx={styles.topThreeSection}>
         <Box sx={styles.topThreeHeader}>
@@ -133,7 +108,7 @@ const Leaderboard: React.FC = () => {
 
       <Box>
         <LeaderboardHeader title="Classement général" showSearch />
-        <GlobalRankingTable politicians={sortedPoliticians} />
+        <GlobalRankingTable leaderboardData={leaderboardData} />
       </Box>
 
       <ActionButton 
