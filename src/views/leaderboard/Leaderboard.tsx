@@ -8,6 +8,8 @@ import { ActionButton } from '../../components/ActionButton';
 import { AddPoliticianDialog } from './components/AddPoliticianDialog';
 import { AddSentenceDialog } from './components/AddSentenceDialog';
 import { Politician } from '../../entities/Politician';
+import { SentencesSidebar } from './components/SentencesSidebar';
+import { LeaderboardData } from './adapters/LeaderboardData';
 
 const styles = {
   container: {
@@ -58,6 +60,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
   const { displayMode, handleDisplayModeChange, leaderboardData, topThree } = useLeaderboard(politicians);
   const [openPoliticianDialog, setOpenPoliticianDialog] = useState(false);
   const [openSentenceDialog, setOpenSentenceDialog] = useState(false);
+  const [selectedData, setSelectedData] = useState<LeaderboardData | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   const handleAddPolitician = () => {
     setOpenPoliticianDialog(true);
@@ -81,6 +85,15 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
 
   const handleSentenceAdded = () => {
     refetch();
+  };
+
+  const handleLeaderboardItemClick = (data: LeaderboardData) => {
+    setSelectedData(data);
+    setSidebarOpen(true);
+  };
+
+  const handleSidebarClose = () => {
+    setSidebarOpen(false);
   };
 
   return (
@@ -109,12 +122,18 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
         <Box sx={styles.topThreeHeader}>
           <LeaderboardHeader title="Le top 3" />
         </Box>
-        <TopThreeLeaders leaders={topThree} />
+        <TopThreeLeaders 
+          leaders={topThree} 
+          onLeaderClick={handleLeaderboardItemClick}
+        />
       </Box>
 
       <Box sx={styles.rankingSection}>
         <LeaderboardHeader title="Classement général" showSearch />
-        <GlobalRankingTable leaderboardData={leaderboardData} />
+        <GlobalRankingTable 
+          leaderboardData={leaderboardData} 
+          onRowClick={handleLeaderboardItemClick}
+        />
       </Box>
 
       <ActionButton 
@@ -132,6 +151,13 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
         open={openSentenceDialog}
         onClose={handleSentenceDialogClose}
         onSuccess={handleSentenceAdded}
+      />
+
+      <SentencesSidebar
+        open={sidebarOpen}
+        onClose={handleSidebarClose}
+        selectedData={selectedData}
+        allPoliticians={politicians}
       />
     </Box>
   );

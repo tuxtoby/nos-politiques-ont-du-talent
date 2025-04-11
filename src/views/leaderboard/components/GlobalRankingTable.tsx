@@ -25,14 +25,24 @@ const styles = {
     width: 75, 
     height: 75, 
     mr: 1
+  },
+  clickableRow: {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.04)'
+    }
   }
 };
 
 interface GlobalRankingTableProps {
   leaderboardData: LeaderboardData[];
+  onRowClick?: (data: LeaderboardData) => void;
 }
 
-export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ leaderboardData }) => {
+export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ 
+  leaderboardData,
+  onRowClick 
+}) => {
   const getAvatarBackgroundColor = (data: LeaderboardData) => {
     if (data.logo_url) return undefined;
     
@@ -42,6 +52,12 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ leaderbo
     }
     
     return '#808080'; // Default gray color for non-political side entities
+  };
+
+  const handleRowClick = (data: LeaderboardData) => {
+    if (onRowClick) {
+      onRowClick(data);
+    }
   };
 
   return (
@@ -59,7 +75,11 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({ leaderbo
         <TableBody>
           {leaderboardData.map((data, index) => {
             return (
-              <TableRow key={data.id}>
+              <TableRow 
+                key={data.id}
+                onClick={() => handleRowClick(data)}
+                sx={onRowClick ? styles.clickableRow : undefined}
+              >
                 <TableCell>
                   <Chip 
                     label={index + 1} 

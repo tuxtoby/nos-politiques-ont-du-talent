@@ -10,6 +10,16 @@ const styles = {
     borderRadius: 5, 
     boxShadow: 2
   },
+  clickableCard: {
+    borderRadius: 5, 
+    boxShadow: 2,
+    cursor: 'pointer',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+    '&:hover': {
+      transform: 'translateY(-4px)',
+      boxShadow: 3
+    }
+  },
   profileBox: {
     display: 'flex', 
     alignItems: 'center', 
@@ -34,9 +44,13 @@ const styles = {
 
 interface TopThreeLeadersProps {
   leaders: LeaderboardData[];
+  onLeaderClick?: (leader: LeaderboardData) => void;
 }
 
-export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => {
+export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ 
+  leaders,
+  onLeaderClick
+}) => {
   const getTrophyColor = (index: number) => {
     switch(index) {
       case 0: return '#FFD700';
@@ -57,11 +71,20 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({ leaders }) => 
     return '#808080'; // Default gray color for non-political side entities
   };
 
+  const handleCardClick = (leader: LeaderboardData) => {
+    if (onLeaderClick) {
+      onLeaderClick(leader);
+    }
+  };
+
   return (
     <Grid container spacing={5}>
       {leaders.map((leader, index) => (
         <Grid size={{ xs: 12, md: 4 }} key={leader.id}>
-          <Card sx={styles.card}>
+          <Card 
+            sx={onLeaderClick ? styles.clickableCard : styles.card}
+            onClick={() => onLeaderClick && handleCardClick(leader)}
+          >
             <CardContent>
               <Box sx={styles.profileBox}>
                 <Avatar
