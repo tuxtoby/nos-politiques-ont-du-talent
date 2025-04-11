@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Card, CardContent, Box, Avatar, Typography, Chip, Stack } from '@mui/material';
 import { EmojiEvents as TrophyIcon } from '@mui/icons-material';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import Euro from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventIcon from '@mui/icons-material/Event';
 import { LeaderboardData } from '../adapters/LeaderboardData';
@@ -143,22 +143,22 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({
                 <Chip 
                   icon={<EventIcon />}
                   label={`${leader.numberOfSentences} condamnation${leader.numberOfSentences > 1 ? 's' : ''}`}
-                  size="small"
+                  size="medium"
                   sx={styles.sentencesChip}
                 />
                 {leader.totalPrisonTime > 0 && (
                   <Chip 
                     icon={<AccessTimeIcon />}
                     label={`${leader.totalPrisonTime} mois`}
-                    size="small"
+                    size="medium"
                     sx={styles.prisonChip}
                   />
                 )}
                 {leader.totalFine > 0 && (
                   <Chip 
-                    icon={<AttachMoneyIcon />}
+                    icon={<Euro />}
                     label={`${leader.totalFine.toLocaleString()} €`}
-                    size="small"
+                    size="medium"
                     sx={styles.fineChip}
                   />
                 )}

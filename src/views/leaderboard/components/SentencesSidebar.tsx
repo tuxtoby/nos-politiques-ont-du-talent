@@ -12,7 +12,7 @@ import {
   Link
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import Euro from '@mui/icons-material/Euro';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventIcon from '@mui/icons-material/Event';
 import LinkIcon from '@mui/icons-material/Link';
@@ -302,7 +302,7 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
               )}
               {totalFine > 0 && (
                 <Chip 
-                  icon={<AttachMoneyIcon />}
+                  icon={<Euro />}
                   label={`${totalFine.toLocaleString()} €`}
                   size="small"
                   sx={styles.fineChip}
@@ -320,7 +320,7 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
                 <Box sx={styles.sentenceDetails}>
                   {sentence.fine > 0 && (
                     <Chip
-                      icon={<AttachMoneyIcon />}
+                      icon={<Euro />}
                       label={`${sentence.fine.toLocaleString()} €`}
                       size="small"
                       sx={styles.fineChip}

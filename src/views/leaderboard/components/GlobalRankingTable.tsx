@@ -12,6 +12,9 @@ import {
   Typography,
   Chip
 } from '@mui/material';
+import SavingsIcon from '@mui/icons-material/Savings';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import EventIcon from '@mui/icons-material/Event';
 import { LeaderboardData } from '../adapters/LeaderboardData';
 import { politicalColors } from '../../../constants/colors';
 import { PoliticalSide } from '../../../entities/PoliticalSide';
@@ -30,6 +33,30 @@ const styles = {
     cursor: 'pointer',
     '&:hover': {
       backgroundColor: 'rgba(0, 0, 0, 0.04)'
+    }
+  },
+  fineChip: {
+    backgroundColor: '#e3f2fd',
+    color: '#0277bd',
+    fontWeight: 'bold',
+    '& .MuiChip-icon': {
+      color: '#0277bd'
+    }
+  },
+  prisonChip: {
+    backgroundColor: '#fce4ec',
+    color: '#c2185b',
+    fontWeight: 'bold',
+    '& .MuiChip-icon': {
+      color: '#c2185b'
+    }
+  },
+  sentencesChip: {
+    backgroundColor: '#e8f5e9',
+    color: '#2e7d32',
+    fontWeight: 'bold',
+    '& .MuiChip-icon': {
+      color: '#2e7d32'
     }
   }
 };
@@ -106,9 +133,38 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({
                     </Box>
                   </Box>
                 </TableCell>
-                <TableCell>{data.numberOfSentences}</TableCell>
-                <TableCell>{data.totalPrisonTime} mois</TableCell>
-                <TableCell>{data.totalFine.toLocaleString()} €</TableCell>
+                <TableCell>
+                  <Chip 
+                    icon={<EventIcon />}
+                    label={`${data.numberOfSentences} condamnation${data.numberOfSentences > 1 ? 's' : ''}`}
+                    size="small"
+                    sx={styles.sentencesChip}
+                  />
+                </TableCell>
+                <TableCell>
+                  {data.totalPrisonTime > 0 ? (
+                    <Chip 
+                      icon={<AccessTimeIcon />}
+                      label={`${data.totalPrisonTime} mois`}
+                      size="small"
+                      sx={styles.prisonChip}
+                    />
+                  ) : (
+                    '-'
+                  )}
+                </TableCell>
+                <TableCell>
+                  {data.totalFine > 0 ? (
+                    <Chip 
+                      icon={<SavingsIcon />}
+                      label={`${data.totalFine.toLocaleString()} €`}
+                      size="small"
+                      sx={styles.fineChip}
+                    />
+                  ) : (
+                    '-'
+                  )}
+                </TableCell>
               </TableRow>
             );
           })}
