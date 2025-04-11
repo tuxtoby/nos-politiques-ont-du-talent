@@ -12,27 +12,40 @@ import { Politician } from '../../entities/Politician';
 const styles = {
   container: {
     width: '100%',
-    p: 3,
-    bgcolor: '#f5f6fa'
-  },
-  title: {
-    mb: 4,
-    fontWeight: 'bold'
+    borderRadius: '8px',
+    backgroundColor: '#fff',
+    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+    overflow: 'hidden',
   },
   toggleButtonContainer: {
-    mb: 3
+    padding: '16px 24px',
+    borderBottom: '1px solid #f0f0f0',
   },
   toggleButtonGroup: {
-    mb: 2
+    '& .MuiToggleButton-root': {
+      borderRadius: '4px',
+      textTransform: 'none',
+      fontWeight: 500,
+      fontSize: '0.875rem',
+      color: '#666',
+      '&.Mui-selected': {
+        backgroundColor: '#e3f2fd',
+        color: '#1976d2',
+      },
+    },
   },
   topThreeSection: {
-    mb: 4
+    padding: '24px',
+    borderBottom: '1px solid #f0f0f0',
   },
   topThreeHeader: {
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    mb: 2
+    marginBottom: '16px',
+  },
+  rankingSection: {
+    padding: '24px',
   }
 };
 
@@ -99,7 +112,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
         <TopThreeLeaders leaders={topThree} />
       </Box>
 
-      <Box>
+      <Box sx={styles.rankingSection}>
         <LeaderboardHeader title="Classement général" showSearch />
         <GlobalRankingTable leaderboardData={leaderboardData} />
       </Box>
