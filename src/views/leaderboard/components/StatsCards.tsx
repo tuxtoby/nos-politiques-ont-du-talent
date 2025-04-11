@@ -2,7 +2,6 @@ import React from 'react';
 import { Grid, Card, CardContent, Typography } from '@mui/material';
 import { Group as GroupIcon, Flag as FlagIcon } from '@mui/icons-material';
 import { Politician } from '../../../entities/Politician';
-import { LeaderboardData } from '../adapters/LeaderboardData';
 
 const styles = {
   container: {
@@ -35,12 +34,12 @@ const styles = {
 };
 
 interface StatsCardsProps {
-  data: LeaderboardData[];
+  data: Politician[];
 }
 
 export const StatsCards: React.FC<StatsCardsProps> = ({ data }) => {
   const totalPoliticians = data.length;
-  const totalCharges = data.reduce((acc, data) => acc + data.numberOfSentences, 0);
+  const totalCharges = data.reduce((acc, data) => acc + data.sentences.length, 0);
 
   return (
     <Grid container spacing={3} sx={styles.container}>

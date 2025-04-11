@@ -1,7 +1,8 @@
-import { ThemeProvider, CssBaseline, createTheme, CircularProgress, Box } from '@mui/material';
+import { ThemeProvider, CssBaseline, createTheme, CircularProgress, Box, Typography } from '@mui/material';
 import Leaderboard from './views/leaderboard/Leaderboard';
 import { useAuthInitialization } from './views/hooks/useAuthInitialization';
 import { useSupabaseData } from './hooks/useSupabaseData';
+import { StatsCards } from './views/leaderboard/components/StatsCards';
 
 const styles = {
   theme: createTheme({
@@ -21,7 +22,11 @@ const styles = {
     alignItems: 'center',
     height: '100vh',
     width: '100%',
-  }
+  },  
+  title: {
+    mb: 4,
+    fontWeight: 'bold'
+  },
 };
 
 function App() {
@@ -53,6 +58,12 @@ function App() {
   return (
     <ThemeProvider theme={styles.theme}>
       <CssBaseline />
+
+      <Typography variant="h4" sx={styles.title}>
+        Nos Politiques Ont Du Talent
+      </Typography>
+
+      <StatsCards data={politicians} />
       <Leaderboard politicians={politicians} refetch={refetch} />
     </ThemeProvider>
   );

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography, ToggleButtonGroup, ToggleButton, CircularProgress } from '@mui/material';
-import { StatsCards } from './components/StatsCards';
+import { Box, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { TopThreeLeaders } from './components/TopThreeLeaders';
 import { GlobalRankingTable } from './components/GlobalRankingTable';
 import { LeaderboardHeader } from './components/LeaderboardHeader';
@@ -73,10 +72,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
 
   return (
     <Box sx={styles.container}>
-      <Typography variant="h4" sx={styles.title}>
-        Nos Politiques Ont Du Talent
-      </Typography>
-
       <Box sx={styles.toggleButtonContainer}>
         <ToggleButtonGroup
           value={displayMode}
@@ -96,8 +91,6 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      
-      <StatsCards data={leaderboardData} />
 
       <Box sx={styles.topThreeSection}>
         <Box sx={styles.topThreeHeader}>
