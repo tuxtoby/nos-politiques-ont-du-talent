@@ -10,7 +10,12 @@ import {
   Box,
   Avatar,
   Typography,
-  Chip
+  Chip,
+  useMediaQuery,
+  useTheme,
+  Card,
+  CardContent,
+  Stack
 } from '@mui/material';
 import { LeaderboardData } from '../adapters/LeaderboardData';
 import { politicalColors } from '../../../constants/colors';
@@ -23,8 +28,8 @@ const styles = {
     alignItems: 'center'
   },
   avatar: {
-    width: 75, 
-    height: 75, 
+    width: { xs: 50, sm: 75 }, 
+    height: { xs: 50, sm: 75 }, 
     mr: 1
   },
   clickableRow: {
@@ -32,6 +37,57 @@ const styles = {
     '&:hover': {
       backgroundColor: 'rgba(0, 0, 0, 0.04)'
     }
+  },
+  mobileCard: {
+    mb: 2,
+    cursor: 'pointer',
+    transition: 'transform 0.2s, box-shadow 0.2s',
+    '&:hover': {
+      transform: 'translateY(-2px)',
+      boxShadow: 3
+    },
+    position: 'relative'
+  },
+  rankChip: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    zIndex: 1,
+    transition: 'none'
+  },
+  mobileCardContent: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 2,
+    paddingTop: 3,
+    position: 'relative',
+    zIndex: 0
+  },
+  mobileProfileBox: {
+    display: 'flex',
+    alignItems: 'center',
+    mb: 2
+  },
+  mobileInfoBox: {
+    ml: 2,
+    overflow: 'hidden'
+  },
+  mobileName: {
+    fontSize: '1rem',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
+  mobileCaption: {
+    fontSize: '0.75rem',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
+  mobileChipsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 1
   }
 };
 
@@ -44,6 +100,9 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({
   leaderboardData,
   onRowClick 
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const getAvatarBackgroundColor = (data: LeaderboardData) => {
     if (data.logo_url) return undefined;
     
@@ -60,6 +119,51 @@ export const GlobalRankingTable: React.FC<GlobalRankingTableProps> = ({
       onRowClick(data);
     }
   };
+
+  if (isMobile) {
+    return (
+      <Box>
+        {leaderboardData.map((data, index) => (
+          <Card 
+            key={data.id}
+            sx={styles.mobileCard}
+            onClick={() => handleRowClick(data)}
+          >
+            <Chip 
+              label={index + 1} 
+              size="small"
+              color={index < 3 ? 'primary' : undefined}
+              sx={styles.rankChip}
+            />
+            <CardContent sx={styles.mobileCardContent}>
+              <Box sx={styles.mobileProfileBox}>
+                <Avatar
+                  sx={{
+                    ...styles.avatar,
+                    bgcolor: getAvatarBackgroundColor(data)
+                  }}
+                  src={data.logo_url}
+                >
+                  {!data.logo_url && data.name.charAt(0)}
+                </Avatar>
+                <Box sx={styles.mobileInfoBox}>
+                  <Typography variant="h6" sx={styles.mobileName}>{data.name}</Typography>
+                  <Typography variant="caption" sx={styles.mobileCaption}>
+                    {data.caption}
+                  </Typography>
+                </Box>
+              </Box>
+              <Stack sx={styles.mobileChipsContainer} spacing={1}>
+                <SentencesChip count={data.numberOfSentences} size="small" />
+                <PrisonTimeChip months={data.totalPrisonTime} size="small" />
+                <FineChip amount={data.totalFine} size="small" />
+              </Stack>
+            </CardContent>
+          </Card>
+        ))}
+      </Box>
+    );
+  }
 
   return (
     <TableContainer component={Paper}>

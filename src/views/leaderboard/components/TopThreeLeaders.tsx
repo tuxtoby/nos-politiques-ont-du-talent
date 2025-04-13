@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Card, CardContent, Box, Avatar, Typography, Stack } from '@mui/material';
+import { Card, CardContent, Box, Avatar, Typography, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { EmojiEvents as TrophyIcon } from '@mui/icons-material';
 import { LeaderboardData } from '../adapters/LeaderboardData';
 import { politicalColors } from '../../../constants/colors';
@@ -27,16 +27,29 @@ const styles = {
     mb: 2
   },
   avatar: {
-    width: 90, 
-    height: 90
+    width: { xs: 60, sm: 90 }, 
+    height: { xs: 60, sm: 90 }
   },
   infoBox: {
-    ml: 2
+    ml: 2,
+    overflow: 'hidden'
+  },
+  name: {
+    fontSize: { xs: '1rem', sm: '1.25rem' },
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
+  caption: {
+    fontSize: { xs: '0.75rem', sm: '0.875rem' },
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   },
   trophyIcon: {
     ml: 'auto',
-    width: 50,
-    height: 50
+    width: { xs: 30, sm: 50 },
+    height: { xs: 30, sm: 50 }
   },
   statsContainer: {
     textAlign: 'center'
@@ -47,6 +60,10 @@ const styles = {
     flexWrap: 'wrap',
     gap: 1,
     mt: 2
+  },
+  gridItem: {
+    width: { xs: '100%', sm: '33.33%' },
+    padding: { xs: 1, sm: 2 }
   }
 };
 
@@ -59,6 +76,9 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({
   leaders,
   onLeaderClick
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const getTrophyColor = (index: number) => {
     switch(index) {
       case 0: return '#FFD700';
@@ -86,9 +106,9 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({
   };
 
   return (
-    <Grid container spacing={5}>
+    <Box sx={{ display: 'flex', flexWrap: 'wrap', margin: { xs: -1, sm: -2 } }}>
       {leaders.map((leader, index) => (
-        <Grid size={{ xs: 12, md: 4 }} key={leader.id}>
+        <Box key={leader.id} sx={styles.gridItem}>
           <Card 
             sx={onLeaderClick ? styles.clickableCard : styles.card}
             onClick={() => onLeaderClick && handleCardClick(leader)}
@@ -105,23 +125,28 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({
                   {!leader.logo_url && leader.name.charAt(0)}
                 </Avatar>
                 <Box sx={styles.infoBox}>
-                  <Typography variant="h6">{leader.name}</Typography>
-                  <Typography color="textSecondary">{leader.caption}</Typography>
+                  <Typography variant="h6" sx={styles.name}>{leader.name}</Typography>
+                  <Typography color="textSecondary" sx={styles.caption}>{leader.caption}</Typography>
                 </Box>
                 <TrophyIcon sx={{
                   ...styles.trophyIcon,
                   color: getTrophyColor(index)
                 }} />
               </Box>
-              <Stack sx={styles.chipsContainer} direction="row" spacing={1}>
-                <SentencesChip count={leader.numberOfSentences} />
-                <PrisonTimeChip months={leader.totalPrisonTime} />
-                <FineChip amount={leader.totalFine} />
+              <Stack 
+                sx={styles.chipsContainer} 
+                direction={isMobile ? "column" : "row"} 
+                spacing={1}
+                alignItems="center"
+              >
+                <SentencesChip count={leader.numberOfSentences} size={isMobile ? "small" : "medium"} />
+                <PrisonTimeChip months={leader.totalPrisonTime} size={isMobile ? "small" : "medium"} />
+                <FineChip amount={leader.totalFine} size={isMobile ? "small" : "medium"} />
               </Stack>
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
       ))}
-    </Grid>
+    </Box>
   );
 };

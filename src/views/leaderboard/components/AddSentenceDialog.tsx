@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -13,7 +13,9 @@ import {
   Box,
   CircularProgress,
   Alert,
-  SelectChangeEvent
+  SelectChangeEvent,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { createSentence } from '../../../services/supabaseService';
 import { PoliticianDto } from '../../../services/dto/PoliticianDto';
@@ -25,7 +27,8 @@ const styles = {
     minWidth: '100%'
   },
   dialogContent: {
-    minWidth: 400
+    minWidth: { xs: '100%', sm: 400 },
+    padding: { xs: '16px', sm: '24px' }
   },
   sourceUrlField: {
     mt: 2
@@ -37,6 +40,24 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     my: 2
+  },
+  dialogPaper: {
+    margin: { xs: '16px', sm: '32px' },
+    width: { xs: 'calc(100% - 32px)', sm: 'auto' },
+    maxWidth: { xs: '100%', sm: '600px' }
+  },
+  dialogTitle: {
+    fontSize: { xs: '1.1rem', sm: '1.25rem' },
+    padding: { xs: '16px', sm: '24px' }
+  },
+  dialogActions: {
+    padding: { xs: '8px 16px', sm: '16px 24px' }
+  },
+  numberField: {
+    mt: 2
+  },
+  dateField: {
+    mt: 2
   }
 };
 
@@ -64,27 +85,30 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const fetchData = useCallback(async () => {
+    try {
+      const { data: politiciansData, error: politiciansError } = await supabase
+        .from('politicians')
+        .select('*');
+      
+      if (politiciansError) {
+        throw new Error('Failed to load politicians');
+      }
+      
+      setPoliticians(politiciansData as PoliticianDto[]);
+    } catch (err) {
+      setError('Failed to load form data');
+      console.error(err);
+    } finally {
+      setLoadingData(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: politiciansData, error: politiciansError } = await supabase
-          .from('politicians')
-          .select('*');
-        
-        if (politiciansError) {
-          throw new Error('Failed to load politicians');
-        }
-        
-        setPoliticians(politiciansData as PoliticianDto[]);
-      } catch (err) {
-        setError('Failed to load form data');
-        console.error(err);
-      } finally {
-        setLoadingData(false);
-      }
-    };
-
     if (open) {
       fetchData();
       // Initialize date field with today's date in YYYY-MM-DD format
@@ -94,7 +118,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
       const day = String(today.getDate()).padStart(2, '0');
       setDate(`${year}-${month}-${day}`);
     }
-  }, [open]);
+  }, [open, fetchData]);
 
   const resetForm = () => {
     setPoliticianId('');
@@ -179,8 +203,16 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} aria-labelledby="add-sentence-dialog-title">
-      <DialogTitle id="add-sentence-dialog-title">Ajouter une condamnation</DialogTitle>
+    <Dialog 
+      open={open} 
+      onClose={handleClose} 
+      aria-labelledby="add-sentence-dialog-title"
+      fullScreen={isMobile}
+      PaperProps={{ sx: styles.dialogPaper }}
+    >
+      <DialogTitle id="add-sentence-dialog-title" sx={styles.dialogTitle}>
+        Ajouter une condamnation
+      </DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         {loadingData ? (
           <Box sx={styles.loadingContainer}>
@@ -225,6 +257,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               value={type}
               onChange={(e) => setType(e.target.value)}
               disabled={loading || success}
+              sx={{ mt: 2 }}
             />
             
             <TextField
@@ -235,9 +268,13 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               fullWidth
               variant="outlined"
               value={fine}
-              onChange={(e) => setFine(e.target.value === '' ? '' : Number(e.target.value))}
+              onChange={(e) => {
+                const value = e.target.value;
+                setFine(value === '' ? '' : Number(value));
+              }}
               disabled={loading || success}
-              InputProps={{ inputProps: { min: 0 } }}
+              sx={styles.numberField}
+              inputProps={{ min: 0 }}
             />
             
             <TextField
@@ -248,22 +285,29 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               fullWidth
               variant="outlined"
               value={prisonTime}
-              onChange={(e) => setPrisonTime(e.target.value === '' ? '' : Number(e.target.value))}
+              onChange={(e) => {
+                const value = e.target.value;
+                setPrisonTime(value === '' ? '' : Number(value));
+              }}
               disabled={loading || success}
-              InputProps={{ inputProps: { min: 0 } }}
+              sx={styles.numberField}
+              inputProps={{ min: 0 }}
             />
             
             <TextField
               margin="dense"
               id="date"
               label="Date de condamnation (YYYY-MM-DD)"
-              type="text"
+              type="date"
               fullWidth
               variant="outlined"
               value={date}
               onChange={(e) => setDate(e.target.value)}
               disabled={loading || success}
-              placeholder="YYYY-MM-DD"
+              sx={styles.dateField}
+              InputLabelProps={{
+                shrink: true,
+              }}
             />
             
             <TextField
@@ -281,7 +325,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
           </>
         )}
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={styles.dialogActions}>
         <Button onClick={handleClose} disabled={loading}>Annuler</Button>
         <Button 
           onClick={handleSubmit} 

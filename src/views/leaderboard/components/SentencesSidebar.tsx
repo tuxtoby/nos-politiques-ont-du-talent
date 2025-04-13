@@ -8,7 +8,9 @@ import {
   Avatar,
   Paper,
   Stack,
-  Link
+  Link,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import EventIcon from '@mui/icons-material/Event';
@@ -24,36 +26,49 @@ import { SentencesChip, PrisonTimeChip, FineChip } from '../../../components';
 
 const styles = {
   drawer: {
-    width: 380,
+    width: { xs: '100%', sm: 380 },
     flexShrink: 0,
     '& .MuiDrawer-paper': {
-      width: 380,
+      width: { xs: '100%', sm: 380 },
       boxSizing: 'border-box',
-      padding: 2
+      padding: { xs: 1, sm: 2 }
     }
   },
   header: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    mb: 3
+    mb: { xs: 2, sm: 3 }
   },
   title: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: { xs: '1.1rem', sm: '1.25rem' }
   },
   entityInfo: {
     display: 'flex',
     alignItems: 'center',
-    mb: 4,
-    mt: 2,
-    pb: 3,
+    mb: { xs: 3, sm: 4 },
+    mt: { xs: 1, sm: 2 },
+    pb: { xs: 2, sm: 3 },
     borderBottom: '1px solid rgba(0, 0, 0, 0.08)'
   },
   avatar: {
-    width: 70,
-    height: 70,
+    width: { xs: 50, sm: 70 },
+    height: { xs: 50, sm: 70 },
     mr: 2,
     boxShadow: '0 3px 5px rgba(0,0,0,0.1)'
+  },
+  entityName: {
+    fontSize: { xs: '1.1rem', sm: '1.25rem' },
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
+  },
+  entityType: {
+    fontSize: { xs: '0.75rem', sm: '0.875rem' }
+  },
+  entityCaption: {
+    fontSize: { xs: '0.7rem', sm: '0.75rem' }
   },
   sentenceItem: {
     display: 'flex',
@@ -62,7 +77,7 @@ const styles = {
     px: 0
   },
   sentenceCard: {
-    p: 2,
+    p: { xs: 1.5, sm: 2 },
     mb: 2,
     borderRadius: 2,
     boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
@@ -75,7 +90,7 @@ const styles = {
   sentenceType: {
     fontWeight: 'bold',
     mb: 2,
-    fontSize: '1.1rem'
+    fontSize: { xs: '1rem', sm: '1.1rem' }
   },
   sentenceDetails: {
     display: 'flex',
@@ -87,14 +102,14 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     color: 'text.secondary',
-    fontSize: '0.875rem',
+    fontSize: { xs: '0.75rem', sm: '0.875rem' },
     mt: 1
   },
   sentenceSource: {
     display: 'flex',
     alignItems: 'center',
     color: 'text.secondary',
-    fontSize: '0.75rem',
+    fontSize: { xs: '0.7rem', sm: '0.75rem' },
     mt: 1,
     wordBreak: 'break-word'
   },
@@ -102,7 +117,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     color: 'primary.main',
-    fontSize: '0.75rem',
+    fontSize: { xs: '0.7rem', sm: '0.75rem' },
     fontStyle: 'italic',
     mt: 1,
     textDecoration: 'none',
@@ -111,7 +126,7 @@ const styles = {
     }
   },
   externalLinkIcon: {
-    fontSize: '0.75rem',
+    fontSize: { xs: '0.7rem', sm: '0.75rem' },
     ml: 0.5
   },
   noSentences: {
@@ -133,15 +148,16 @@ const styles = {
   },
   totalChips: {
     display: 'flex',
+    flexDirection: { xs: 'column', sm: 'row' },
     gap: 1
   },
   dateIcon: {
-    fontSize: '0.875rem',
+    fontSize: { xs: '0.75rem', sm: '0.875rem' },
     marginRight: 0.5,
     color: 'text.secondary'
   },
   linkIcon: {
-    fontSize: '0.875rem',
+    fontSize: { xs: '0.75rem', sm: '0.875rem' },
     marginRight: 0.5,
     color: 'text.secondary'
   }
@@ -162,6 +178,8 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
 }) => {
   // Always call hooks at the top level, regardless of conditions
   const { sentences } = useSentences(selectedData, allPoliticians);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   
   // If no selected data, don't render the drawer
   if (!selectedData) {
@@ -217,7 +235,7 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
 
   return (
     <Drawer
-      anchor="right"
+      anchor={isMobile ? "bottom" : "right"}
       open={open}
       onClose={onClose}
       sx={styles.drawer}
@@ -242,14 +260,14 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
           {!selectedData.logo_url && selectedData.name.charAt(0)}
         </Avatar>
         <Box>
-          <Typography variant="h6">{selectedData.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="h6" sx={styles.entityName}>{selectedData.name}</Typography>
+          <Typography variant="body2" color="text.secondary" sx={styles.entityType}>
             {entityType === 'politician' ? 'Politique' : 
              entityType === 'party' ? 'Parti politique' : 
              'Tendance politique'}
           </Typography>
           {selectedData.caption && (
-            <Typography variant="caption" display="block">
+            <Typography variant="caption" display="block" sx={styles.entityCaption}>
               {selectedData.caption}
             </Typography>
           )}
@@ -259,10 +277,10 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
       {sentences.length > 0 ? (
         <>
           <Box sx={styles.sentenceCount}>
-            <Stack direction="row" spacing={1}>
-              <SentencesChip count={sentences.length}/>
-              <PrisonTimeChip months={totalPrisonTime}/>
-              <FineChip amount={totalFine}/>
+            <Stack direction={isMobile ? "column" : "row"} spacing={1} sx={styles.totalChips}>
+              <SentencesChip count={sentences.length} size={isMobile ? "small" : "medium"}/>
+              <PrisonTimeChip months={totalPrisonTime} size={isMobile ? "small" : "medium"}/>
+              <FineChip amount={totalFine} size={isMobile ? "small" : "medium"}/>
             </Stack>
           </Box>
           <List disablePadding>
@@ -300,8 +318,8 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
                         underline="hover"
                       >
                         <LinkIcon sx={styles.linkIcon} />
-                        {sentence.source.length > 50 
-                          ? `${sentence.source.substring(0, 50)}...` 
+                        {sentence.source.length > (isMobile ? 30 : 50) 
+                          ? `${sentence.source.substring(0, isMobile ? 30 : 50)}...` 
                           : sentence.source}
                         <OpenInNewIcon sx={styles.externalLinkIcon} />
                       </Link>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -13,7 +13,9 @@ import {
   Box,
   CircularProgress,
   Alert,
-  SelectChangeEvent
+  SelectChangeEvent,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import { fetchPoliticalSides, fetchParties, createPolitician } from '../../../services/supabaseService';
 import { PartyDto } from '../../../services/dto/PartyDto';
@@ -25,7 +27,8 @@ const styles = {
     minWidth: '100%'
   },
   dialogContent: {
-    minWidth: 400
+    minWidth: { xs: '100%', sm: 400 },
+    padding: { xs: '16px', sm: '24px' }
   },
   photoUrlField: {
     mt: 2
@@ -37,6 +40,18 @@ const styles = {
     display: 'flex',
     justifyContent: 'center',
     my: 2
+  },
+  dialogPaper: {
+    margin: { xs: '16px', sm: '32px' },
+    width: { xs: 'calc(100% - 32px)', sm: 'auto' },
+    maxWidth: { xs: '100%', sm: '600px' }
+  },
+  dialogTitle: {
+    fontSize: { xs: '1.1rem', sm: '1.25rem' },
+    padding: { xs: '16px', sm: '24px' }
+  },
+  dialogActions: {
+    padding: { xs: '8px 16px', sm: '16px 24px' }
   }
 };
 
@@ -64,29 +79,32 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const fetchData = useCallback(async () => {
+    try {
+      const [partiesData, politicalSidesData] = await Promise.all([
+        fetchParties(),
+        fetchPoliticalSides()
+      ]);
+      
+      setParties(partiesData);
+      setPoliticalSides(politicalSidesData);
+    } catch (err) {
+      setError('Failed to load form data');
+      console.error(err);
+    } finally {
+      setLoadingData(false);
+    }
+  }, []);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [partiesData, politicalSidesData] = await Promise.all([
-          fetchParties(),
-          fetchPoliticalSides()
-        ]);
-        
-        setParties(partiesData);
-        setPoliticalSides(politicalSidesData);
-      } catch (err) {
-        setError('Failed to load form data');
-        console.error(err);
-      } finally {
-        setLoadingData(false);
-      }
-    };
-
     if (open) {
       fetchData();
     }
-  }, [open]);
+  }, [open, fetchData]);
 
   const resetForm = () => {
     setFirstName('');
@@ -169,8 +187,16 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={handleClose} aria-labelledby="add-politician-dialog-title">
-      <DialogTitle id="add-politician-dialog-title">Ajouter une personnalité politique</DialogTitle>
+    <Dialog 
+      open={open} 
+      onClose={handleClose} 
+      aria-labelledby="add-politician-dialog-title"
+      fullScreen={isMobile}
+      PaperProps={{ sx: styles.dialogPaper }}
+    >
+      <DialogTitle id="add-politician-dialog-title" sx={styles.dialogTitle}>
+        Ajouter une personnalité politique
+      </DialogTitle>
       <DialogContent sx={styles.dialogContent}>
         {loadingData ? (
           <Box sx={styles.loadingContainer}>
@@ -269,7 +295,7 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
           </>
         )}
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={styles.dialogActions}>
         <Button onClick={handleClose} disabled={loading}>Annuler</Button>
         <Button 
           onClick={handleSubmit} 

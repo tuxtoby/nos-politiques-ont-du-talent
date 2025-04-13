@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { Box, ToggleButtonGroup, ToggleButton, useMediaQuery, useTheme } from '@mui/material';
 import { TopThreeLeaders } from './components/TopThreeLeaders';
 import { GlobalRankingTable } from './components/GlobalRankingTable';
 import { LeaderboardHeader } from './components/LeaderboardHeader';
@@ -20,16 +20,19 @@ const styles = {
     overflow: 'hidden',
   },
   toggleButtonContainer: {
-    padding: '16px 24px',
+    padding: { xs: '12px 16px', sm: '16px 24px' },
     borderBottom: '1px solid #f0f0f0',
+    overflowX: 'auto',
   },
   toggleButtonGroup: {
     '& .MuiToggleButton-root': {
       borderRadius: '4px',
       textTransform: 'none',
       fontWeight: 500,
-      fontSize: '0.875rem',
+      fontSize: { xs: '0.75rem', sm: '0.875rem' },
       color: '#666',
+      padding: { xs: '6px 8px', sm: '8px 12px' },
+      minWidth: { xs: '60px', sm: 'auto' },
       '&.Mui-selected': {
         backgroundColor: '#e3f2fd',
         color: '#1976d2',
@@ -37,7 +40,7 @@ const styles = {
     },
   },
   topThreeSection: {
-    padding: '24px',
+    padding: { xs: '16px', sm: '24px' },
     borderBottom: '1px solid #f0f0f0',
   },
   topThreeHeader: {
@@ -47,7 +50,7 @@ const styles = {
     marginBottom: '16px',
   },
   rankingSection: {
-    padding: '24px',
+    padding: { xs: '16px', sm: '24px' },
   }
 };
 
@@ -62,6 +65,8 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
   const [openSentenceDialog, setOpenSentenceDialog] = useState(false);
   const [selectedData, setSelectedData] = useState<LeaderboardData | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   
   const handleAddPolitician = () => {
     setOpenPoliticianDialog(true);
@@ -105,6 +110,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
           onChange={handleDisplayModeChange}
           aria-label="display mode"
           sx={styles.toggleButtonGroup}
+          size={isMobile ? "small" : "medium"}
         >
           <ToggleButton value="general" aria-label="general view">
             Général
