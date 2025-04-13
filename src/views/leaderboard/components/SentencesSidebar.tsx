@@ -6,14 +6,11 @@ import {
   List, 
   IconButton,
   Avatar,
-  Chip,
   Paper,
   Stack,
   Link
 } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import Euro from '@mui/icons-material/Euro';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import EventIcon from '@mui/icons-material/Event';
 import LinkIcon from '@mui/icons-material/Link';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -23,6 +20,7 @@ import { Party } from '../../../entities/Party';
 import { PoliticalSide } from '../../../entities/PoliticalSide';
 import { politicalColors } from '../../../constants/colors';
 import { useSentences } from '../hooks/useSentences';
+import { SentencesChip, PrisonTimeChip, FineChip } from '../../../components';
 
 const styles = {
   drawer: {
@@ -132,30 +130,6 @@ const styles = {
   },
   sentenceCountChip: {
     fontWeight: 'bold'
-  },
-  fineChip: {
-    backgroundColor: '#e3f2fd',
-    color: '#0277bd',
-    fontWeight: 'bold',
-    '& .MuiChip-icon': {
-      color: '#0277bd'
-    }
-  },
-  prisonChip: {
-    backgroundColor: '#fce4ec',
-    color: '#c2185b',
-    fontWeight: 'bold',
-    '& .MuiChip-icon': {
-      color: '#c2185b'
-    }
-  },
-  sentencesChip: {
-    backgroundColor: '#e8f5e9',
-    color: '#2e7d32',
-    fontWeight: 'bold',
-    '& .MuiChip-icon': {
-      color: '#2e7d32'
-    }
   },
   totalChips: {
     display: 'flex',
@@ -286,28 +260,9 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
         <>
           <Box sx={styles.sentenceCount}>
             <Stack direction="row" spacing={1}>
-              <Chip 
-                icon={<EventIcon />}
-                label={`${sentences.length} condamnation${sentences.length > 1 ? 's' : ''}`}
-                size="small"
-                sx={styles.sentencesChip}
-              />
-              {totalPrisonTime > 0 && (
-                <Chip 
-                  icon={<AccessTimeIcon />}
-                  label={`${totalPrisonTime} mois`}
-                  size="small"
-                  sx={styles.prisonChip}
-                />
-              )}
-              {totalFine > 0 && (
-                <Chip 
-                  icon={<Euro />}
-                  label={`${totalFine.toLocaleString()} €`}
-                  size="small"
-                  sx={styles.fineChip}
-                />
-              )}
+              <SentencesChip count={sentences.length}/>
+              <PrisonTimeChip months={totalPrisonTime}/>
+              <FineChip amount={totalFine}/>
             </Stack>
           </Box>
           <List disablePadding>
@@ -318,23 +273,15 @@ export const SentencesSidebar: React.FC<SentencesSidebarProps> = ({
                 </Typography>
                 
                 <Box sx={styles.sentenceDetails}>
-                  {sentence.fine > 0 && (
-                    <Chip
-                      icon={<Euro />}
-                      label={`${sentence.fine.toLocaleString()} €`}
-                      size="small"
-                      sx={styles.fineChip}
-                    />
-                  )}
+                  <FineChip
+                    amount={sentence.fine}
+                    size="small"
+                  />
                   
-                  {sentence.prisonTime > 0 && (
-                    <Chip
-                      icon={<AccessTimeIcon />}
-                      label={`${sentence.prisonTime} mois de prison`}
-                      size="small"
-                      sx={styles.prisonChip}
-                    />
-                  )}
+                  <PrisonTimeChip
+                    months={sentence.prisonTime}
+                    size="small"
+                  />
                 </Box>
                 
                 <Typography variant="body2" sx={styles.sentenceDate}>

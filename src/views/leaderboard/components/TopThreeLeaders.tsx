@@ -1,12 +1,10 @@
 import React from 'react';
-import { Grid, Card, CardContent, Box, Avatar, Typography, Chip, Stack } from '@mui/material';
+import { Grid, Card, CardContent, Box, Avatar, Typography, Stack } from '@mui/material';
 import { EmojiEvents as TrophyIcon } from '@mui/icons-material';
-import Euro from '@mui/icons-material/Euro';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import EventIcon from '@mui/icons-material/Event';
 import { LeaderboardData } from '../adapters/LeaderboardData';
 import { politicalColors } from '../../../constants/colors';
 import { PoliticalSide } from '../../../entities/PoliticalSide';
+import { SentencesChip, PrisonTimeChip, FineChip } from '../../../components';
 
 const styles = {
   card: {
@@ -42,30 +40,6 @@ const styles = {
   },
   statsContainer: {
     textAlign: 'center'
-  },
-  fineChip: {
-    backgroundColor: '#e3f2fd',
-    color: '#0277bd',
-    fontWeight: 'bold',
-    '& .MuiChip-icon': {
-      color: '#0277bd'
-    }
-  },
-  prisonChip: {
-    backgroundColor: '#fce4ec',
-    color: '#c2185b',
-    fontWeight: 'bold',
-    '& .MuiChip-icon': {
-      color: '#c2185b'
-    }
-  },
-  sentencesChip: {
-    backgroundColor: '#e8f5e9',
-    color: '#2e7d32',
-    fontWeight: 'bold',
-    '& .MuiChip-icon': {
-      color: '#2e7d32'
-    }
   },
   chipsContainer: {
     display: 'flex',
@@ -140,28 +114,9 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({
                 }} />
               </Box>
               <Stack sx={styles.chipsContainer} direction="row" spacing={1}>
-                <Chip 
-                  icon={<EventIcon />}
-                  label={`${leader.numberOfSentences} condamnation${leader.numberOfSentences > 1 ? 's' : ''}`}
-                  size="medium"
-                  sx={styles.sentencesChip}
-                />
-                {leader.totalPrisonTime > 0 && (
-                  <Chip 
-                    icon={<AccessTimeIcon />}
-                    label={`${leader.totalPrisonTime} mois`}
-                    size="medium"
-                    sx={styles.prisonChip}
-                  />
-                )}
-                {leader.totalFine > 0 && (
-                  <Chip 
-                    icon={<Euro />}
-                    label={`${leader.totalFine.toLocaleString()} €`}
-                    size="medium"
-                    sx={styles.fineChip}
-                  />
-                )}
+                <SentencesChip count={leader.numberOfSentences} />
+                <PrisonTimeChip months={leader.totalPrisonTime} />
+                <FineChip amount={leader.totalFine} />
               </Stack>
             </CardContent>
           </Card>
