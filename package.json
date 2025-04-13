@@ -2,7 +2,7 @@
   "name": "political-leaderboard",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://tuxtoby.github.io/nos-politiques-ont-du-talent",
+  "homepage": "https://nos-politiques-ont-du-talent.fr",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
