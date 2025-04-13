@@ -17,9 +17,9 @@ import {
   useMediaQuery,
   useTheme
 } from '@mui/material';
-import { fetchPoliticalSides, fetchParties, createPolitician } from '../../../services/supabaseService';
-import { PartyDto } from '../../../services/dto/PartyDto';
-import { PoliticalSideDto } from '../../../services/dto/PoliticalSideDto';
+import { fetchPoliticalSides, fetchParties, createPolitician } from '../../../../services/supabaseService';
+import { PartyDto } from '../../../../services/dto/PartyDto';
+import { PoliticalSideDto } from '../../../../services/dto/PoliticalSideDto';
 
 const styles = {
   formControl: {

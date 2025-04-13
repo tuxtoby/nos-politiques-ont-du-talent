@@ -5,10 +5,10 @@ import { GlobalRankingTable } from './components/GlobalRankingTable';
 import { LeaderboardHeader } from './components/LeaderboardHeader';
 import { useLeaderboard } from './hooks/useLeaderboard';
 import { ActionButton } from '../../components/ActionButton';
-import { AddPoliticianDialog } from './components/AddPoliticianDialog';
-import { AddSentenceDialog } from './components/AddSentenceDialog';
+import { AddPoliticianDialog } from './components/AddDataDialog/AddPoliticianDialog';
+import { AddSentenceDialog } from './components/AddDataDialog/AddSentenceDialog';
 import { Politician } from '../../entities/Politician';
-import { SentencesSidebar } from './components/SentencesSidebar';
+import { SentencesSidebar } from './components/Sidebar/SentencesSidebar';
 import { LeaderboardData } from './adapters/LeaderboardData';
 
 const styles = {

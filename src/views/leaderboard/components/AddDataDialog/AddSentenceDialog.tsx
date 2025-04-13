@@ -17,9 +17,9 @@ import {
   useMediaQuery,
   useTheme
 } from '@mui/material';
-import { createSentence } from '../../../services/supabaseService';
-import { PoliticianDto } from '../../../services/dto/PoliticianDto';
-import { supabase } from '../../../utils/supabase';
+import { createSentence } from '../../../../services/supabaseService';
+import { PoliticianDto } from '../../../../services/dto/PoliticianDto';
+import { supabase } from '../../../../utils/supabase';
 
 const styles = {
   formControl: {
