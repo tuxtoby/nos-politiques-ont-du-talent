@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/nos-politiques-ont-du-talent/static/css/main.e6c13ad2.css",
+    "main.js": "/nos-politiques-ont-du-talent/static/js/main.2619d6d7.js",
+    "static/js/952.69863436.chunk.js": "/nos-politiques-ont-du-talent/static/js/952.69863436.chunk.js",
+    "static/js/453.dd1c611c.chunk.js": "/nos-politiques-ont-du-talent/static/js/453.dd1c611c.chunk.js",
+    "index.html": "/nos-politiques-ont-du-talent/index.html",
+    "main.e6c13ad2.css.map": "/nos-politiques-ont-du-talent/static/css/main.e6c13ad2.css.map",
+    "main.2619d6d7.js.map": "/nos-politiques-ont-du-talent/static/js/main.2619d6d7.js.map",
+    "952.69863436.chunk.js.map": "/nos-politiques-ont-du-talent/static/js/952.69863436.chunk.js.map",
+    "453.dd1c611c.chunk.js.map": "/nos-politiques-ont-du-talent/static/js/453.dd1c611c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.2619d6d7.js"
+  ]
+}
