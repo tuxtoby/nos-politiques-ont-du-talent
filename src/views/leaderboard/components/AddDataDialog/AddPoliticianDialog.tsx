@@ -17,9 +17,11 @@ import {
   useMediaQuery,
   useTheme
 } from '@mui/material';
-import { fetchPoliticalSides, fetchParties, createPolitician } from '../../../../services/supabaseService';
+import { createPolitician } from '../../../../services/supabaseService';
 import { PartyDto } from '../../../../services/dto/PartyDto';
 import { PoliticalSideDto } from '../../../../services/dto/PoliticalSideDto';
+import { getParties } from '../../../../services/api/get/getParties';
+import { getPoliticalSides } from '../../../../services/api/get/getPoliticalSides';
 
 const styles = {
   formControl: {
@@ -86,8 +88,8 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
   const fetchData = useCallback(async () => {
     try {
       const [partiesData, politicalSidesData] = await Promise.all([
-        fetchParties(),
-        fetchPoliticalSides()
+        getParties(),
+        getPoliticalSides()
       ]);
       
       setParties(partiesData);
