@@ -1,5 +1,6 @@
 import React from 'react';
-import { Box, Typography, Avatar } from '@mui/material';
+import { Box, Typography, Avatar, Link } from '@mui/material';
+import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import { LeaderboardData } from '../../adapters/LeaderboardData';
 import { politicalColors } from '../../../../constants/colors';
 import { PoliticalSide } from '../../../../entities/PoliticalSide';
@@ -13,30 +14,46 @@ interface EntityHeaderProps {
 export function EntityHeader({ selectedData }: EntityHeaderProps) {
   const entityType = getEntityType(selectedData.politicalEntity);
   const avatarBackgroundColor = getAvatarBackgroundColor(selectedData);
+
+  console.log(selectedData);
   
   return (
-    <Box sx={styles.entityInfo}>
-      <Avatar 
-        sx={{
-          ...styles.avatar,
-          bgcolor: avatarBackgroundColor
-        }}
-        src={selectedData.logo_url}
-      >
-        {!selectedData.logo_url && selectedData.name.charAt(0)}
-      </Avatar>
-      <Box>
-        <Typography variant="h6" sx={styles.entityName}>{selectedData.name}</Typography>
-        <Typography variant="body2" color="text.secondary" sx={styles.entityType}>
-          {getEntityTypeLabel(entityType)}
-        </Typography>
-        {selectedData.caption && (
-          <Typography variant="caption" display="block" sx={styles.entityCaption}>
-            {selectedData.caption}
+    <>
+      {selectedData.vote_url && (
+        <Link 
+          href={selectedData.vote_url} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          sx={styles.voteButton}
+          underline="none"
+        >
+          <HowToVoteIcon sx={styles.voteButtonIcon} />
+          Voir son activité parlementaire
+        </Link>
+      )}
+      <Box sx={styles.entityInfo}>
+        <Avatar 
+          sx={{
+            ...styles.avatar,
+            bgcolor: avatarBackgroundColor
+          }}
+          src={selectedData.logo_url}
+        >
+          {!selectedData.logo_url && selectedData.name.charAt(0)}
+        </Avatar>
+        <Box>
+          <Typography variant="h6" sx={styles.entityName}>{selectedData.name}</Typography>
+          <Typography variant="body2" color="text.secondary" sx={styles.entityType}>
+            {getEntityTypeLabel(entityType)}
           </Typography>
-        )}
+          {selectedData.caption && (
+            <Typography variant="caption" display="block" sx={styles.entityCaption}>
+              {selectedData.caption}
+            </Typography>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 

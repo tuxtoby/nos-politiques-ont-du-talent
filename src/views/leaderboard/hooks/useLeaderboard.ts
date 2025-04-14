@@ -120,6 +120,7 @@ function createLeaderboardDataFromPolitician(politician: Politician): Leaderboar
     caption: politician.party?.name + ' (' + politician.party?.abbreviation + ')' || '',
     politicalEntity: politician,
     logo_url: politician.photo || '',
+    vote_url: politician.vote_url,
     numberOfSentences: politician.sentences.length,
     totalPrisonTime,
     totalFine

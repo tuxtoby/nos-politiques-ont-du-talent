@@ -6,5 +6,6 @@ export interface Politician {
     name: string;
     party: Party;
     photo: string;
+    vote_url?: string;
     sentences: Sentence[];
 }

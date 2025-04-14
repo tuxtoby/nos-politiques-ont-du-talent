@@ -44,6 +44,33 @@ export const styles = {
   entityCaption: {
     fontSize: { xs: '0.7rem', sm: '0.75rem' }
   },
+  voteButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    mt: 1,
+    mb: 2,
+    textDecoration: 'none',
+    color: 'primary.main',
+    borderRadius: 2,
+    padding: '8px 16px',
+    fontSize: { xs: '0.85rem', sm: '0.95rem' },
+    fontWeight: 'medium',
+    backgroundColor: 'rgba(25, 118, 210, 0.08)',
+    transition: 'all 0.2s ease',
+    boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
+    '&:hover': {
+      backgroundColor: 'rgba(25, 118, 210, 0.15)',
+      textDecoration: 'none',
+      boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+      transform: 'translateY(-1px)'
+    }
+  },
+  voteButtonIcon: {
+    fontSize: { xs: '1rem', sm: '1.1rem' },
+    marginRight: 1
+  },
   sentenceItem: {
     display: 'flex',
     flexDirection: 'column',

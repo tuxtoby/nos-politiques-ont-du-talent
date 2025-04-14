@@ -8,6 +8,7 @@ export interface LeaderboardData {
     caption: string;
     politicalEntity: Politician | Party | PoliticalSide;
     logo_url: string;
+    vote_url?: string;
     numberOfSentences: number;
     totalPrisonTime: number;
     totalFine: number;

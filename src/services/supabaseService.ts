@@ -94,6 +94,7 @@ export async function fetchPoliticians(): Promise<Politician[]> {
         name: politician.first_name + ' ' + politician.last_name,
         party: partyEntity,
         photo: politician.photo_url || '',
+        vote_url: politician.vote_url,
         sentences: politicianSentences
       };
     }).filter(politician => politician !== null) as Politician[];
