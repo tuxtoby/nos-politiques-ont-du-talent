@@ -60,7 +60,15 @@ interface LeaderboardProps {
 }
 
 const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
-  const { displayMode, handleDisplayModeChange, leaderboardData, topThree } = useLeaderboard(politicians);
+  const { 
+    displayMode, 
+    handleDisplayModeChange, 
+    leaderboardData, 
+    topThree,
+    searchQuery,
+    setSearchQuery
+  } = useLeaderboard(politicians);
+  
   const [openPoliticianDialog, setOpenPoliticianDialog] = useState(false);
   const [openSentenceDialog, setOpenSentenceDialog] = useState(false);
   const [selectedData, setSelectedData] = useState<LeaderboardData | null>(null);
@@ -101,6 +109,10 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
     setSidebarOpen(false);
   };
 
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+  };
+
   return (
     <Box sx={styles.container}>
       <Box sx={styles.toggleButtonContainer}>
@@ -135,7 +147,12 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
       </Box>
 
       <Box sx={styles.rankingSection}>
-        <LeaderboardHeader title="Classement général" showSearch />
+        <LeaderboardHeader 
+          title="Classement général" 
+          showSearch 
+          searchQuery={searchQuery}
+          onSearchChange={handleSearchChange}
+        />
         <GlobalRankingTable 
           leaderboardData={leaderboardData} 
           onRowClick={handleLeaderboardItemClick}

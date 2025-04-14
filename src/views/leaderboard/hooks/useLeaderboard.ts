@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Politician } from '../../../entities/Politician';
 import { LeaderboardData } from '../adapters/LeaderboardData';
 import { Party } from '../../../entities/Party';
@@ -8,6 +8,7 @@ type DisplayMode = 'general' | 'parti' | 'couleur';
 
 export function useLeaderboard(data: Politician[]) {
   const [displayMode, setDisplayMode] = useState<DisplayMode>('general');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleDisplayModeChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -18,13 +19,32 @@ export function useLeaderboard(data: Politician[]) {
     }
   };
 
-  const leaderboardData = processData(data, displayMode);
-  const topThree = leaderboardData.slice(0, 3);
+  const processedData = useMemo(() => processData(data, displayMode), [data, displayMode]);
+  
+  const filteredData = useMemo(() => {
+    if (!searchQuery.trim()) {
+      return processedData;
+    }
+    
+    const normalizedQuery = searchQuery.toLowerCase().trim();
+    
+    return processedData.filter(item => 
+      item.name.toLowerCase().includes(normalizedQuery) || 
+      item.caption.toLowerCase().includes(normalizedQuery)
+    );
+  }, [processedData, searchQuery]);
+
+  const topThree = useMemo(() => 
+    filteredData.slice(0, 3), 
+    [filteredData]
+  );
 
   return {
     displayMode,
     handleDisplayModeChange,
-    leaderboardData,
+    searchQuery,
+    setSearchQuery,
+    leaderboardData: filteredData,
     topThree
   };
 }
