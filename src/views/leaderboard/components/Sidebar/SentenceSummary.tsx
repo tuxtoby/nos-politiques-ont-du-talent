@@ -18,9 +18,9 @@ export function SentenceSummary({ sentences }: SentenceSummaryProps) {
   return (
     <Box sx={styles.sentenceCount}>
       <Stack direction={isMobile ? "column" : "row"} spacing={1} sx={styles.totalChips}>
-        <SentencesChip count={sentences.length} size={isMobile ? "small" : "medium"}/>
-        <PrisonTimeChip months={totalPrisonTime} size={isMobile ? "small" : "medium"}/>
-        <FineChip amount={totalFine} size={isMobile ? "small" : "medium"}/>
+        <SentencesChip count={sentences.length} size="small"/>
+        <PrisonTimeChip months={totalPrisonTime} size="small"/>
+        <FineChip amount={totalFine} size="small"/>
       </Stack>
     </Box>
   );
