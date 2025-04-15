@@ -274,6 +274,9 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               }}
               disabled={loading || success}
               sx={styles.numberField}
+              InputLabelProps={{
+                shrink: true,
+              }}
               inputProps={{ min: 0 }}
             />
             
