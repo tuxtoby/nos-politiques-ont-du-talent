@@ -21,17 +21,17 @@ export function SentenceCard({ sentence }: SentenceCardProps) {
       <Typography variant="subtitle1" sx={styles.sentenceType}>
         {sentence.type}
       </Typography>
-      
+
       <Box sx={styles.sentenceDetails}>
         <FineChip amount={sentence.fine} size="small" />
         <PrisonTimeChip months={sentence.prisonTime} size="small" />
       </Box>
-      
+
       <Typography variant="body2" sx={styles.sentenceDate}>
         <EventIcon sx={styles.dateIcon} />
         {formatDate(sentence.date)}
       </Typography>
-      
+
       {renderSource(isMobile, sentence.source)}
     </Paper>
   );
@@ -41,25 +41,25 @@ function renderSource(isMobile: boolean, source?: string) {
   if (!source) return null;
 
   const hasUrl = isValidUrl(source) || source.match(/https?:\/\/[^\s]+/);
-  
+
   if (hasUrl) {
     return (
-      <Link 
+      <Link
         href={formatSourceUrl(source)}
-        target="_blank" 
+        target="_blank"
         rel="noopener noreferrer"
         sx={styles.sourceLink}
         underline="hover"
       >
         <LinkIcon sx={styles.linkIcon} />
-        {source.length > (isMobile ? 30 : 50) 
-          ? `${source.substring(0, isMobile ? 30 : 50)}...` 
+        {source.length > (isMobile ? 30 : 50)
+          ? `${source.substring(0, isMobile ? 30 : 50)}...`
           : source}
         <OpenInNewIcon sx={styles.externalLinkIcon} />
       </Link>
     );
   }
-  
+
   return (
     <Typography variant="body2" sx={styles.sentenceSource}>
       <LinkIcon sx={styles.linkIcon} />

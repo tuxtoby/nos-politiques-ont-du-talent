@@ -52,12 +52,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     checkAuth();
 
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setUser(session?.user || null);
-        setLoading(false);
-      }
-    );
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      setUser(session?.user || null);
+      setLoading(false);
+    });
 
     return () => {
       authListener?.subscription.unsubscribe();

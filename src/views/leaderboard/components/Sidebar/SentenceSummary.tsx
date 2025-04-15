@@ -11,16 +11,16 @@ interface SentenceSummaryProps {
 export function SentenceSummary({ sentences }: SentenceSummaryProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
+
   const totalFine = calculateTotalFine(sentences);
   const totalPrisonTime = calculateTotalPrisonTime(sentences);
 
   return (
     <Box sx={styles.sentenceCount}>
-      <Stack direction={isMobile ? "column" : "row"} spacing={1} sx={styles.totalChips}>
-        <SentencesChip count={sentences.length} size="small"/>
-        <PrisonTimeChip months={totalPrisonTime} size="small"/>
-        <FineChip amount={totalFine} size="small"/>
+      <Stack direction={isMobile ? 'column' : 'row'} spacing={1} sx={styles.totalChips}>
+        <SentencesChip count={sentences.length} size="small" />
+        <PrisonTimeChip months={totalPrisonTime} size="small" />
+        <FineChip amount={totalFine} size="small" />
       </Stack>
     </Box>
   );

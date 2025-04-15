@@ -9,8 +9,8 @@ const styles = {
     color: '#c2185b',
     fontWeight: 'bold',
     '& .MuiChip-icon': {
-      color: '#c2185b'
-    }
+      color: '#c2185b',
+    },
   },
   empty: {
     textAlign: 'center',
@@ -18,22 +18,19 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     fontStyle: 'italic',
-    gap: 1
+    gap: 1,
   },
   emptyIcon: {
     fontSize: '1rem',
-    color: '#9e9e9e'
-  }
+    color: '#9e9e9e',
+  },
 };
 
 interface PrisonTimeChipProps extends Omit<ChipProps, 'icon' | 'label'> {
   months: number;
 }
 
-export const PrisonTimeChip: React.FC<PrisonTimeChipProps> = ({ 
-  months, 
-  ...chipProps 
-}) => {
+export const PrisonTimeChip: React.FC<PrisonTimeChipProps> = ({ months, ...chipProps }) => {
   if (months <= 0) {
     return (
       <Box sx={styles.empty}>
@@ -42,9 +39,9 @@ export const PrisonTimeChip: React.FC<PrisonTimeChipProps> = ({
       </Box>
     );
   }
-  
+
   return (
-    <Chip 
+    <Chip
       icon={<AccessTimeIcon />}
       label={`${months} mois`}
       sx={{ ...styles.prisonChip, ...chipProps.sx }}

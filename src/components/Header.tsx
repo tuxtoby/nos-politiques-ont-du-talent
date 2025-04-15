@@ -85,14 +85,13 @@ interface HeaderProps {
   title?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({ 
-}) => {
+const Header: React.FC<HeaderProps> = ({}) => {
   return (
     <Box sx={styles.header}>
       <Box sx={styles.logoSection}>
         <BalanceIcon sx={styles.logoIcon} />
         <Typography variant="h6" sx={styles.logo}>
-        Nos Politiques Ont Du Talent
+          Nos Politiques Ont Du Talent
         </Typography>
       </Box>
     </Box>

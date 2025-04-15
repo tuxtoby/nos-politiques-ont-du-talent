@@ -51,7 +51,7 @@ const styles = {
   },
   rankingSection: {
     padding: { xs: '16px', sm: '24px' },
-  }
+  },
 };
 
 interface LeaderboardProps {
@@ -60,22 +60,22 @@ interface LeaderboardProps {
 }
 
 const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
-  const { 
-    displayMode, 
-    handleDisplayModeChange, 
-    leaderboardData, 
+  const {
+    displayMode,
+    handleDisplayModeChange,
+    leaderboardData,
     topThree,
     searchQuery,
-    setSearchQuery
+    setSearchQuery,
   } = useLeaderboard(politicians);
-  
+
   const [openPoliticianDialog, setOpenPoliticianDialog] = useState(false);
   const [openSentenceDialog, setOpenSentenceDialog] = useState(false);
   const [selectedData, setSelectedData] = useState<LeaderboardData | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
+
   const handleAddPolitician = () => {
     setOpenPoliticianDialog(true);
   };
@@ -122,7 +122,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
           onChange={handleDisplayModeChange}
           aria-label="display mode"
           sx={styles.toggleButtonGroup}
-          size={isMobile ? "small" : "medium"}
+          size={isMobile ? 'small' : 'medium'}
         >
           <ToggleButton value="general" aria-label="general view">
             Général
@@ -140,36 +140,30 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
         <Box sx={styles.topThreeHeader}>
           <LeaderboardHeader title="Le top 3" />
         </Box>
-        <TopThreeLeaders 
-          leaders={topThree} 
-          onLeaderClick={handleLeaderboardItemClick}
-        />
+        <TopThreeLeaders leaders={topThree} onLeaderClick={handleLeaderboardItemClick} />
       </Box>
 
       <Box sx={styles.rankingSection}>
-        <LeaderboardHeader 
-          title="Classement général" 
-          showSearch 
+        <LeaderboardHeader
+          title="Classement général"
+          showSearch
           searchQuery={searchQuery}
           onSearchChange={handleSearchChange}
         />
-        <GlobalRankingTable 
-          leaderboardData={leaderboardData} 
+        <GlobalRankingTable
+          leaderboardData={leaderboardData}
           onRowClick={handleLeaderboardItemClick}
         />
       </Box>
 
-      <ActionButton 
-        onAddPolitician={handleAddPolitician}
-        onAddSentence={handleAddSentence}
-      />
-      
+      <ActionButton onAddPolitician={handleAddPolitician} onAddSentence={handleAddSentence} />
+
       <AddPoliticianDialog
         open={openPoliticianDialog}
         onClose={handlePoliticianDialogClose}
         onSuccess={handlePoliticianAdded}
       />
-      
+
       <AddSentenceDialog
         open={openSentenceDialog}
         onClose={handleSentenceDialogClose}

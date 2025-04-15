@@ -9,8 +9,8 @@ const styles = {
     color: '#2e7d32',
     fontWeight: 'bold',
     '& .MuiChip-icon': {
-      color: '#2e7d32'
-    }
+      color: '#2e7d32',
+    },
   },
   empty: {
     textAlign: 'center',
@@ -18,22 +18,19 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     fontStyle: 'italic',
-    gap: 1
+    gap: 1,
   },
   emptyIcon: {
     fontSize: '1rem',
-    color: '#9e9e9e'
-  }
+    color: '#9e9e9e',
+  },
 };
 
 interface SentencesChipProps extends Omit<ChipProps, 'icon' | 'label'> {
   count: number;
 }
 
-export const SentencesChip: React.FC<SentencesChipProps> = ({ 
-  count,
-  ...chipProps 
-}) => {
+export const SentencesChip: React.FC<SentencesChipProps> = ({ count, ...chipProps }) => {
   if (count <= 0) {
     return (
       <Box sx={styles.empty}>
@@ -42,9 +39,9 @@ export const SentencesChip: React.FC<SentencesChipProps> = ({
       </Box>
     );
   }
-  
+
   return (
-    <Chip 
+    <Chip
       icon={<GavelIcon />}
       label={`${count} condamnation${count > 1 ? 's' : ''}`}
       size="medium"

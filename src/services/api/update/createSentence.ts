@@ -14,15 +14,15 @@ export async function createSentence(
     // Always attempt anonymous sign-in before creating a sentence
     console.log('Starting sentence creation process');
     const signInResult = await signInAnonymously();
-    
+
     if (!signInResult.success) {
       console.error('Failed to authenticate:', signInResult.error);
-      return { 
-        success: false, 
-        error: `Authentication failed: ${signInResult.error}` 
+      return {
+        success: false,
+        error: `Authentication failed: ${signInResult.error}`,
       };
     }
-    
+
     console.log('Authentication successful, proceeding with sentence creation');
 
     // Now try to insert the data
@@ -35,8 +35,8 @@ export async function createSentence(
           fine: fine,
           prison_time: prisonTime,
           date: date,
-          source_url: sourceUrl || null
-        }
+          source_url: sourceUrl || null,
+        },
       ])
       .select()
       .single();

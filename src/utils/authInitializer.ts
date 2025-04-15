@@ -4,7 +4,7 @@ export async function initializeAuth() {
   try {
     console.log('Initializing authentication...');
     const result = await signInAnonymously();
-    
+
     if (result.success) {
       console.log('Anonymous authentication successful');
       return true;

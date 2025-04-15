@@ -20,9 +20,9 @@ export async function signInAnonymously(): Promise<AuthResponse> {
 
     return { success: true, user: data.user };
   } catch (error) {
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }
@@ -40,9 +40,9 @@ export async function signIn(email: string, password: string): Promise<AuthRespo
 
     return { success: true, user: data.user };
   } catch (error) {
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }
@@ -60,9 +60,9 @@ export async function signUp(email: string, password: string): Promise<AuthRespo
 
     return { success: true, user: data.user };
   } catch (error) {
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }
@@ -70,16 +70,16 @@ export async function signUp(email: string, password: string): Promise<AuthRespo
 export async function signOut(): Promise<{ success: boolean; error?: string }> {
   try {
     const { error } = await supabase.auth.signOut();
-    
+
     if (error) {
       return { success: false, error: error.message };
     }
-    
+
     return { success: true };
   } catch (error) {
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
     };
   }
 }

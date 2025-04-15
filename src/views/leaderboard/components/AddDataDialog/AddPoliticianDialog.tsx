@@ -16,7 +16,7 @@ import {
   SelectChangeEvent,
   useMediaQuery,
   useTheme,
-  Tooltip
+  Tooltip,
 } from '@mui/material';
 import { createPolitician } from '../../../../services/supabaseService';
 import { PartyDto } from '../../../../services/dto/PartyDto';
@@ -27,35 +27,35 @@ import { getPoliticalSides } from '../../../../services/api/get/getPoliticalSide
 const styles = {
   formControl: {
     mt: 2,
-    minWidth: '100%'
+    minWidth: '100%',
   },
   dialogContent: {
     minWidth: { xs: '100%', sm: 400 },
-    padding: { xs: '16px', sm: '24px' }
+    padding: { xs: '16px', sm: '24px' },
   },
   photoUrlField: {
-    mt: 2
+    mt: 2,
   },
   submitButton: {
-    ml: 1
+    ml: 1,
   },
   loadingContainer: {
     display: 'flex',
     justifyContent: 'center',
-    my: 2
+    my: 2,
   },
   dialogPaper: {
     margin: { xs: '16px', sm: '32px' },
     width: { xs: 'calc(100% - 32px)', sm: 'auto' },
-    maxWidth: { xs: '100%', sm: '600px' }
+    maxWidth: { xs: '100%', sm: '600px' },
   },
   dialogTitle: {
     fontSize: { xs: '1.1rem', sm: '1.25rem' },
-    padding: { xs: '16px', sm: '24px' }
+    padding: { xs: '16px', sm: '24px' },
   },
   dialogActions: {
-    padding: { xs: '8px 16px', sm: '16px 24px' }
-  }
+    padding: { xs: '8px 16px', sm: '16px 24px' },
+  },
 };
 
 interface AddPoliticianDialogProps {
@@ -67,7 +67,7 @@ interface AddPoliticianDialogProps {
 export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
   open,
   onClose,
-  onSuccess
+  onSuccess,
 }) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -75,15 +75,15 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
   const [politicalSideId, setPoliticalSideId] = useState<number | ''>('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [voteUrl, setVoteUrl] = useState('');
-  
+
   const [parties, setParties] = useState<PartyDto[]>([]);
   const [politicalSides, setPoliticalSides] = useState<PoliticalSideDto[]>([]);
-  
+
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -91,9 +91,9 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
     try {
       const [partiesData, politicalSidesData] = await Promise.all([
         getParties(),
-        getPoliticalSides()
+        getPoliticalSides(),
       ]);
-      
+
       setParties(partiesData);
       setPoliticalSides(politicalSidesData);
     } catch (err) {
@@ -129,7 +129,7 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
   const handlePartyChange = (event: SelectChangeEvent) => {
     const selectedPartyId = event.target.value;
     setPartyId(selectedPartyId);
-    
+
     // Auto-select political side based on party if available
     const selectedParty = parties.find(party => party.id === selectedPartyId);
     if (selectedParty) {
@@ -143,17 +143,17 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
       setError('First name is required');
       return;
     }
-    
+
     if (!lastName.trim()) {
       setError('Last name is required');
       return;
     }
-    
+
     if (!partyId) {
       setError('Party is required');
       return;
     }
-    
+
     if (politicalSideId === '') {
       setError('Political side is required');
       return;
@@ -161,7 +161,7 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
 
     setLoading(true);
     setError(null);
-    
+
     try {
       const result = await createPolitician(
         firstName.trim(),
@@ -171,7 +171,7 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
         photoUrl.trim() || undefined,
         voteUrl.trim() || undefined
       );
-      
+
       if (result.success) {
         setSuccess(true);
         setTimeout(() => {
@@ -180,7 +180,9 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
         }, 1500);
       } else {
         if (result.error?.includes('violates row-level security policy')) {
-          setError('Permission denied: You do not have the required permissions to add a politician. Please contact the administrator.');
+          setError(
+            'Permission denied: You do not have the required permissions to add a politician. Please contact the administrator.'
+          );
         } else {
           setError(result.error || 'Failed to create politician');
         }
@@ -193,9 +195,9 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
   };
 
   return (
-    <Dialog 
-      open={open} 
-      onClose={handleClose} 
+    <Dialog
+      open={open}
+      onClose={handleClose}
       aria-labelledby="add-politician-dialog-title"
       fullScreen={isMobile}
       PaperProps={{ sx: styles.dialogPaper }}
@@ -210,21 +212,29 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
           </Box>
         ) : (
           <>
-            {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-            {success && <Alert severity="success" sx={{ mb: 2 }}>Personnalité politique ajoutée avec succès!</Alert>}
-            
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
+            {success && (
+              <Alert severity="success" sx={{ mb: 2 }}>
+                Personnalité politique ajoutée avec succès!
+              </Alert>
+            )}
+
             {parties.length === 0 && !error && (
               <Alert severity="warning" sx={{ mb: 2 }}>
                 Aucun parti politique n'a été trouvé. Veuillez contacter l'administrateur.
               </Alert>
             )}
-            
+
             {politicalSides.length === 0 && !error && (
               <Alert severity="warning" sx={{ mb: 2 }}>
                 Aucune tendance politique n'a été trouvée. Veuillez contacter l'administrateur.
               </Alert>
             )}
-            
+
             <TextField
               autoFocus
               margin="dense"
@@ -234,10 +244,10 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
               fullWidth
               variant="outlined"
               value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
+              onChange={e => setFirstName(e.target.value)}
               disabled={loading || success}
             />
-            
+
             <TextField
               margin="dense"
               id="lastName"
@@ -246,10 +256,10 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
               fullWidth
               variant="outlined"
               value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
+              onChange={e => setLastName(e.target.value)}
               disabled={loading || success}
             />
-            
+
             <FormControl sx={styles.formControl} disabled={loading || success}>
               <InputLabel id="party-select-label">Parti politique</InputLabel>
               <Select
@@ -260,14 +270,14 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
                 onChange={handlePartyChange}
                 fullWidth
               >
-                {parties.map((party) => (
+                {parties.map(party => (
                   <MenuItem key={party.id} value={party.id}>
                     {party.name} ({party.abbreviation})
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            
+
             <FormControl sx={styles.formControl} disabled={loading || success}>
               <InputLabel id="political-side-select-label">Tendance politique</InputLabel>
               <Select
@@ -275,17 +285,17 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
                 id="political-side-select"
                 value={politicalSideId}
                 label="Tendance politique"
-                onChange={(e) => setPoliticalSideId(e.target.value as number)}
+                onChange={e => setPoliticalSideId(e.target.value as number)}
                 fullWidth
               >
-                {politicalSides.map((side) => (
+                {politicalSides.map(side => (
                   <MenuItem key={side.id} value={side.id}>
                     {side.name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            
+
             <TextField
               margin="dense"
               id="photoUrl"
@@ -294,12 +304,15 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
               fullWidth
               variant="outlined"
               value={photoUrl}
-              onChange={(e) => setPhotoUrl(e.target.value)}
+              onChange={e => setPhotoUrl(e.target.value)}
               disabled={loading || success}
               sx={styles.photoUrlField}
             />
 
-            <Tooltip title="Disponible sur datan.fr > votre député > ses derniers votes" placement="top">
+            <Tooltip
+              title="Disponible sur datan.fr > votre député > ses derniers votes"
+              placement="top"
+            >
               <TextField
                 margin="dense"
                 id="voteUrl"
@@ -308,7 +321,7 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
                 fullWidth
                 variant="outlined"
                 value={voteUrl}
-                onChange={(e) => setVoteUrl(e.target.value)}
+                onChange={e => setVoteUrl(e.target.value)}
                 disabled={loading || success}
                 sx={styles.photoUrlField}
               />
@@ -317,11 +330,13 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
         )}
       </DialogContent>
       <DialogActions sx={styles.dialogActions}>
-        <Button onClick={handleClose} disabled={loading}>Annuler</Button>
-        <Button 
-          onClick={handleSubmit} 
-          variant="contained" 
-          color="primary" 
+        <Button onClick={handleClose} disabled={loading}>
+          Annuler
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
           disabled={loading || loadingData || success}
           sx={styles.submitButton}
         >

@@ -2,9 +2,7 @@ import { supabase } from '../../../utils/supabase';
 import { SentenceDto } from '../../dto/SentenceDto';
 
 export async function getSentences(): Promise<SentenceDto[]> {
-  const { data, error } = await supabase
-    .from('sentences')
-    .select('*');
+  const { data, error } = await supabase.from('sentences').select('*');
 
   if (error) {
     console.error('Error fetching sentences:', error);

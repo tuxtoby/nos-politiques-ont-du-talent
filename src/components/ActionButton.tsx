@@ -1,10 +1,5 @@
 import React, { useState } from 'react';
-import { 
-  Fab, 
-  Zoom, 
-  Box,
-  Typography
-} from '@mui/material';
+import { Fab, Zoom, Box, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import PersonIcon from '@mui/icons-material/Person';
 import GavelIcon from '@mui/icons-material/Gavel';
@@ -18,33 +13,33 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'flex-end',
     gap: 2,
-    zIndex: 1000
+    zIndex: 1000,
   },
   mainFab: {
     bgcolor: 'primary.main',
     '&:hover': {
       bgcolor: 'primary.dark',
-    }
+    },
   },
   subFab: {
     bgcolor: 'secondary.main',
     '&:hover': {
       bgcolor: 'secondary.dark',
-    }
+    },
   },
   fabLabel: {
     display: 'flex',
     alignItems: 'center',
     gap: 1,
-    mb: 1
+    mb: 1,
   },
   labelText: {
     bgcolor: 'background.paper',
     px: 2,
     py: 1,
     borderRadius: 1,
-    boxShadow: 1
-  }
+    boxShadow: 1,
+  },
 };
 
 interface ActionButtonProps {
@@ -52,10 +47,7 @@ interface ActionButtonProps {
   onAddSentence: () => void;
 }
 
-export const ActionButton: React.FC<ActionButtonProps> = ({
-  onAddPolitician,
-  onAddSentence
-}) => {
+export const ActionButton: React.FC<ActionButtonProps> = ({ onAddPolitician, onAddSentence }) => {
   const [open, setOpen] = useState(false);
 
   const handleToggle = () => {
@@ -90,7 +82,7 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
           </Fab>
         </Box>
       </Zoom>
-      
+
       <Zoom in={open} style={{ transitionDelay: open ? '0ms' : '0ms' }}>
         <Box sx={styles.fabLabel}>
           <Typography variant="body2" sx={styles.labelText}>
@@ -107,13 +99,8 @@ export const ActionButton: React.FC<ActionButtonProps> = ({
           </Fab>
         </Box>
       </Zoom>
-      
-      <Fab
-        color="primary"
-        aria-label="add"
-        sx={styles.mainFab}
-        onClick={handleToggle}
-      >
+
+      <Fab color="primary" aria-label="add" sx={styles.mainFab} onClick={handleToggle}>
         <AddIcon />
       </Fab>
     </Box>

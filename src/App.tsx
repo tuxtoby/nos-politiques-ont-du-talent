@@ -1,4 +1,11 @@
-import { ThemeProvider, CssBaseline, createTheme, CircularProgress, Box, Container } from '@mui/material';
+import {
+  ThemeProvider,
+  CssBaseline,
+  createTheme,
+  CircularProgress,
+  Box,
+  Container,
+} from '@mui/material';
 import Leaderboard from './views/leaderboard/Leaderboard';
 import { useAuthInitialization } from './views/hooks/useAuthInitialization';
 import { useSupabaseData } from './hooks/useSupabaseData';

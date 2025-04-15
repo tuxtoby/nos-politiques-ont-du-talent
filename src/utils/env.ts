@@ -16,9 +16,9 @@ export function validateEnv(): { valid: boolean; missing: string[] } {
     'SUPABASE_ANON_EMAIL',
     'SUPABASE_ANON_PASSWORD',
   ];
-  
+
   const missing = required.filter(key => !env[key as keyof typeof env]);
-  
+
   return {
     valid: missing.length === 0,
     missing,

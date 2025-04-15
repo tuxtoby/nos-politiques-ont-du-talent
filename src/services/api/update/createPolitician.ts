@@ -10,19 +10,19 @@ export async function createPolitician(
   photoUrl?: string,
   voteUrl?: string
 ): Promise<{ success: boolean; error?: string; politician?: PoliticianDto }> {
-  try {   
+  try {
     // Always attempt anonymous sign-in before creating a politician
     console.log('Starting politician creation process');
     const signInResult = await signInAnonymously();
-    
+
     if (!signInResult.success) {
       console.error('Failed to authenticate:', signInResult.error);
-      return { 
-        success: false, 
-        error: `Authentication failed: ${signInResult.error}` 
+      return {
+        success: false,
+        error: `Authentication failed: ${signInResult.error}`,
       };
     }
-    
+
     console.log('Authentication successful, proceeding with politician creation');
 
     // Now try to insert the data
@@ -35,8 +35,8 @@ export async function createPolitician(
           party_id: partyId,
           political_side_id: politicalSideId,
           photo_url: photoUrl || null,
-          vote_url: voteUrl || null
-        }
+          vote_url: voteUrl || null,
+        },
       ])
       .select()
       .single();

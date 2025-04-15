@@ -15,7 +15,7 @@ import {
   Alert,
   SelectChangeEvent,
   useMediaQuery,
-  useTheme
+  useTheme,
 } from '@mui/material';
 import { createSentence } from '../../../../services/supabaseService';
 import { PoliticianDto } from '../../../../services/dto/PoliticianDto';
@@ -24,41 +24,41 @@ import { supabase } from '../../../../utils/supabase';
 const styles = {
   formControl: {
     mt: 2,
-    minWidth: '100%'
+    minWidth: '100%',
   },
   dialogContent: {
     minWidth: { xs: '100%', sm: 400 },
-    padding: { xs: '16px', sm: '24px' }
+    padding: { xs: '16px', sm: '24px' },
   },
   sourceUrlField: {
-    mt: 2
+    mt: 2,
   },
   submitButton: {
-    ml: 1
+    ml: 1,
   },
   loadingContainer: {
     display: 'flex',
     justifyContent: 'center',
-    my: 2
+    my: 2,
   },
   dialogPaper: {
     margin: { xs: '16px', sm: '32px' },
     width: { xs: 'calc(100% - 32px)', sm: 'auto' },
-    maxWidth: { xs: '100%', sm: '600px' }
+    maxWidth: { xs: '100%', sm: '600px' },
   },
   dialogTitle: {
     fontSize: { xs: '1.1rem', sm: '1.25rem' },
-    padding: { xs: '16px', sm: '24px' }
+    padding: { xs: '16px', sm: '24px' },
   },
   dialogActions: {
-    padding: { xs: '8px 16px', sm: '16px 24px' }
+    padding: { xs: '8px 16px', sm: '16px 24px' },
   },
   numberField: {
-    mt: 2
+    mt: 2,
   },
   dateField: {
-    mt: 2
-  }
+    mt: 2,
+  },
 };
 
 interface AddSentenceDialogProps {
@@ -70,7 +70,7 @@ interface AddSentenceDialogProps {
 export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
   open,
   onClose,
-  onSuccess
+  onSuccess,
 }) => {
   const [politicianId, setPoliticianId] = useState('');
   const [type, setType] = useState('');
@@ -78,14 +78,14 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
   const [prisonTime, setPrisonTime] = useState<number | ''>('');
   const [date, setDate] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
-  
+
   const [politicians, setPoliticians] = useState<PoliticianDto[]>([]);
-  
+
   const [loading, setLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -94,11 +94,11 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
       const { data: politiciansData, error: politiciansError } = await supabase
         .from('politicians')
         .select('*');
-      
+
       if (politiciansError) {
         throw new Error('Failed to load politicians');
       }
-      
+
       setPoliticians(politiciansData as PoliticianDto[]);
     } catch (err) {
       setError('Failed to load form data');
@@ -146,17 +146,17 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
       setError('Politician is required');
       return;
     }
-    
+
     if (!type.trim()) {
       setError('Type of sentence is required');
       return;
     }
-    
+
     if (fine === '' && prisonTime === '') {
       setError('At least one of Fine or Prison Time must be provided');
       return;
     }
-    
+
     if (!date) {
       setError('Date is required');
       return;
@@ -171,7 +171,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
 
     setLoading(true);
     setError(null);
-    
+
     try {
       const result = await createSentence(
         politicianId,
@@ -181,7 +181,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
         date,
         sourceUrl.trim() || undefined
       );
-      
+
       if (result.success) {
         setSuccess(true);
         setTimeout(() => {
@@ -190,7 +190,9 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
         }, 1500);
       } else {
         if (result.error?.includes('violates row-level security policy')) {
-          setError('Permission denied: You do not have the required permissions to add a sentence. Please contact the administrator.');
+          setError(
+            'Permission denied: You do not have the required permissions to add a sentence. Please contact the administrator.'
+          );
         } else {
           setError(result.error || 'Failed to create sentence');
         }
@@ -203,9 +205,9 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
   };
 
   return (
-    <Dialog 
-      open={open} 
-      onClose={handleClose} 
+    <Dialog
+      open={open}
+      onClose={handleClose}
       aria-labelledby="add-sentence-dialog-title"
       fullScreen={isMobile}
       PaperProps={{ sx: styles.dialogPaper }}
@@ -220,15 +222,24 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
           </Box>
         ) : (
           <>
-            {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
-            {success && <Alert severity="success" sx={{ mb: 2 }}>Condamnation ajoutée avec succès!</Alert>}
-            
-            {politicians.length === 0 && !error && (
-              <Alert severity="warning" sx={{ mb: 2 }}>
-                Aucune personnalité politique n'a été trouvée. Veuillez d'abord ajouter un politicien.
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
               </Alert>
             )}
-            
+            {success && (
+              <Alert severity="success" sx={{ mb: 2 }}>
+                Condamnation ajoutée avec succès!
+              </Alert>
+            )}
+
+            {politicians.length === 0 && !error && (
+              <Alert severity="warning" sx={{ mb: 2 }}>
+                Aucune personnalité politique n'a été trouvée. Veuillez d'abord ajouter un
+                politicien.
+              </Alert>
+            )}
+
             <FormControl sx={styles.formControl} disabled={loading || success}>
               <InputLabel id="politician-select-label">Personnalité politique</InputLabel>
               <Select
@@ -239,14 +250,14 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
                 onChange={handlePoliticianChange}
                 fullWidth
               >
-                {politicians.map((politician) => (
+                {politicians.map(politician => (
                   <MenuItem key={politician.id} value={politician.id}>
                     {politician.first_name} {politician.last_name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
-            
+
             <TextField
               margin="dense"
               id="type"
@@ -255,11 +266,11 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               fullWidth
               variant="outlined"
               value={type}
-              onChange={(e) => setType(e.target.value)}
+              onChange={e => setType(e.target.value)}
               disabled={loading || success}
               sx={{ mt: 2 }}
             />
-            
+
             <TextField
               margin="dense"
               id="fine"
@@ -268,7 +279,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               fullWidth
               variant="outlined"
               value={fine}
-              onChange={(e) => {
+              onChange={e => {
                 const value = e.target.value;
                 setFine(value === '' ? '' : Number(value));
               }}
@@ -279,7 +290,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               }}
               inputProps={{ min: 0 }}
             />
-            
+
             <TextField
               margin="dense"
               id="prisonTime"
@@ -288,7 +299,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               fullWidth
               variant="outlined"
               value={prisonTime}
-              onChange={(e) => {
+              onChange={e => {
                 const value = e.target.value;
                 setPrisonTime(value === '' ? '' : Number(value));
               }}
@@ -296,7 +307,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               sx={styles.numberField}
               inputProps={{ min: 0 }}
             />
-            
+
             <TextField
               margin="dense"
               id="date"
@@ -305,14 +316,14 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               fullWidth
               variant="outlined"
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={e => setDate(e.target.value)}
               disabled={loading || success}
               sx={styles.dateField}
               InputLabelProps={{
                 shrink: true,
               }}
             />
-            
+
             <TextField
               margin="dense"
               id="sourceUrl"
@@ -321,7 +332,7 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
               fullWidth
               variant="outlined"
               value={sourceUrl}
-              onChange={(e) => setSourceUrl(e.target.value)}
+              onChange={e => setSourceUrl(e.target.value)}
               disabled={loading || success}
               sx={styles.sourceUrlField}
             />
@@ -329,11 +340,13 @@ export const AddSentenceDialog: React.FC<AddSentenceDialogProps> = ({
         )}
       </DialogContent>
       <DialogActions sx={styles.dialogActions}>
-        <Button onClick={handleClose} disabled={loading}>Annuler</Button>
-        <Button 
-          onClick={handleSubmit} 
-          variant="contained" 
-          color="primary" 
+        <Button onClick={handleClose} disabled={loading}>
+          Annuler
+        </Button>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
           disabled={loading || loadingData || success}
           sx={styles.submitButton}
         >

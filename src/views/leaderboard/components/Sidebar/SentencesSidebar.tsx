@@ -17,37 +17,32 @@ interface SentencesSidebarProps {
   allPoliticians: Politician[];
 }
 
-export function SentencesSidebar({ 
-  open, 
-  onClose, 
+export function SentencesSidebar({
+  open,
+  onClose,
   selectedData,
-  allPoliticians
+  allPoliticians,
 }: SentencesSidebarProps) {
   const { sentences } = useSentences(selectedData, allPoliticians);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  
+
   if (!selectedData) {
     return null;
   }
 
   return (
-    <Drawer
-      anchor={isMobile ? "bottom" : "right"}
-      open={open}
-      onClose={onClose}
-      sx={styles.drawer}
-    >
+    <Drawer anchor={isMobile ? 'bottom' : 'right'} open={open} onClose={onClose} sx={styles.drawer}>
       <CloseButtonHeader onClose={onClose} />
       <Box sx={styles.contentContainer}>
         <EntityHeader selectedData={selectedData} />
         {sentences.length > 0 && <SentenceSummary sentences={sentences} />}
-        
+
         {selectedData.vote_url && (
-          <Link 
-            href={selectedData.vote_url} 
-            target="_blank" 
-            rel="noopener noreferrer" 
+          <Link
+            href={selectedData.vote_url}
+            target="_blank"
+            rel="noopener noreferrer"
             sx={styles.voteButton}
             underline="none"
           >
@@ -55,7 +50,7 @@ export function SentencesSidebar({
             Voir son activité parlementaire
           </Link>
         )}
-        
+
         <Box sx={styles.condemnationsSection}>
           <Typography variant="h6" sx={styles.sectionTitle}>
             Condamnations

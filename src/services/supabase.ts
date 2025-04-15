@@ -1,10 +1,4 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export interface Database {
   public: {
@@ -19,7 +13,7 @@ export interface Database {
           photo_url?: string;
           created_at: string;
           updated_at: string;
-        }
+        };
         Insert: {
           id: string;
           first_name: string;
@@ -29,7 +23,7 @@ export interface Database {
           photo_url?: string;
           created_at: string;
           updated_at: string;
-        }
+        };
         Update: {
           id: string;
           first_name?: string;
@@ -39,51 +33,51 @@ export interface Database {
           photo_url?: string;
           created_at?: string;
           updated_at?: string;
-        }
-      }
+        };
+      };
       sentences: {
         Row: {
-          id: string
-          politician_id: string
-          type: string
-          fine: number
-          prison_time: number
-          date: string
-          source: string | null
-          created_at?: string
-          updated_at?: string
-        }
+          id: string;
+          politician_id: string;
+          type: string;
+          fine: number;
+          prison_time: number;
+          date: string;
+          source: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
         Insert: {
-          id?: string
-          politician_id: string
-          type: string
-          fine: number
-          prison_time: number
-          date: string
-          source?: string | null
-          created_at?: string
-          updated_at?: string
-        }
+          id?: string;
+          politician_id: string;
+          type: string;
+          fine: number;
+          prison_time: number;
+          date: string;
+          source?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
         Update: {
-          id?: string
-          politician_id?: string
-          type?: string
-          fine?: number
-          prison_time?: number
-          date?: string
-          source?: string | null
-          updated_at?: string
-        }
-      }
-    }
+          id?: string;
+          politician_id?: string;
+          type?: string;
+          fine?: number;
+          prison_time?: number;
+          date?: string;
+          source?: string | null;
+          updated_at?: string;
+        };
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Enums: {
-      [_ in never]: never
-    }
-  }
+      [_ in never]: never;
+    };
+  };
 }

@@ -13,22 +13,24 @@ interface EntityHeaderProps {
 export function EntityHeader({ selectedData }: EntityHeaderProps) {
   const entityType = getEntityType(selectedData.politicalEntity);
   const avatarBackgroundColor = getAvatarBackgroundColor(selectedData);
-  
+
   console.log(selectedData);
-  
+
   return (
     <Box sx={styles.entityInfo}>
-      <Avatar 
+      <Avatar
         sx={{
           ...styles.avatar,
-          bgcolor: avatarBackgroundColor
+          bgcolor: avatarBackgroundColor,
         }}
         src={selectedData.logo_url}
       >
         {!selectedData.logo_url && selectedData.name.charAt(0)}
       </Avatar>
       <Box>
-        <Typography variant="h6" sx={styles.entityName}>{selectedData.name}</Typography>
+        <Typography variant="h6" sx={styles.entityName}>
+          {selectedData.name}
+        </Typography>
         <Typography variant="body2" color="text.secondary" sx={styles.entityType}>
           {getEntityTypeLabel(entityType)}
         </Typography>
@@ -44,12 +46,12 @@ export function EntityHeader({ selectedData }: EntityHeaderProps) {
 
 function getAvatarBackgroundColor(selectedData: LeaderboardData) {
   if (selectedData.logo_url) return undefined;
-  
+
   if ('id' in selectedData.politicalEntity && typeof selectedData.politicalEntity.id === 'number') {
     const politicalSide = selectedData.politicalEntity as PoliticalSide;
     return politicalColors[politicalSide.id];
   }
-  
+
   return '#808080';
 }
 

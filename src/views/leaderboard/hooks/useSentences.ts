@@ -16,7 +16,7 @@ export function useSentences(selectedData: LeaderboardData | null, allPolitician
 
 function getSentencesForEntity(data: LeaderboardData, allPoliticians: Politician[]): Sentence[] {
   const entity = data.politicalEntity;
-  
+
   if ('sentences' in entity) {
     return getPoliticianSentences(entity as Politician);
   } else if ('abbreviation' in entity) {
@@ -31,17 +31,18 @@ function getPoliticianSentences(politician: Politician): Sentence[] {
 }
 
 function getPartySentences(party: Party, allPoliticians: Politician[]): Sentence[] {
-  const politiciansInParty = allPoliticians.filter(
-    politician => politician.party?.id === party.id
-  );
-  
+  const politiciansInParty = allPoliticians.filter(politician => politician.party?.id === party.id);
+
   return politiciansInParty.flatMap(politician => politician.sentences);
 }
 
-function getPoliticalSideSentences(politicalSide: PoliticalSide, allPoliticians: Politician[]): Sentence[] {
+function getPoliticalSideSentences(
+  politicalSide: PoliticalSide,
+  allPoliticians: Politician[]
+): Sentence[] {
   const politiciansWithSide = allPoliticians.filter(
     politician => politician.party?.politicalSide?.id === politicalSide.id
   );
-  
+
   return politiciansWithSide.flatMap(politician => politician.sentences);
 }

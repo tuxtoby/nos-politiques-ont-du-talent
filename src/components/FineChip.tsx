@@ -9,8 +9,8 @@ const styles = {
     color: '#0277bd',
     fontWeight: 'bold',
     '& .MuiChip-icon': {
-      color: '#0277bd'
-    }
+      color: '#0277bd',
+    },
   },
   empty: {
     textAlign: 'center',
@@ -18,22 +18,19 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     fontStyle: 'italic',
-    gap: 1
+    gap: 1,
   },
   emptyIcon: {
     fontSize: '1rem',
-    color: '#9e9e9e'
-  }
+    color: '#9e9e9e',
+  },
 };
 
 interface FineChipProps extends Omit<ChipProps, 'icon' | 'label'> {
   amount: number;
 }
 
-export const FineChip: React.FC<FineChipProps> = ({ 
-  amount, 
-  ...chipProps 
-}) => {
+export const FineChip: React.FC<FineChipProps> = ({ amount, ...chipProps }) => {
   if (amount <= 0) {
     return (
       <Box sx={styles.empty}>
@@ -42,9 +39,9 @@ export const FineChip: React.FC<FineChipProps> = ({
       </Box>
     );
   }
-  
+
   return (
-    <Chip 
+    <Chip
       icon={<PaymentIcon />}
       label={`${amount.toLocaleString()} €`}
       sx={{ ...styles.fineChip, ...chipProps.sx }}

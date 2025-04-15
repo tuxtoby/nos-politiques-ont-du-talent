@@ -33,7 +33,7 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
 
     try {
       const response = await signIn(email, password);
-      
+
       if (response.success) {
         onLoginSuccess();
       } else {
@@ -52,28 +52,28 @@ export function LoginForm({ onLoginSuccess }: LoginFormProps) {
       <Typography variant="h5" component="h1" align="center">
         Login
       </Typography>
-      
+
       {error && <Alert severity="error">{error}</Alert>}
-      
+
       <TextField
         label="Email"
         type="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={e => setEmail(e.target.value)}
         fullWidth
         required
         autoFocus
       />
-      
+
       <TextField
         label="Password"
         type="password"
         value={password}
-        onChange={(e) => setPassword(e.target.value)}
+        onChange={e => setPassword(e.target.value)}
         fullWidth
         required
       />
-      
+
       <Button
         type="submit"
         variant="contained"

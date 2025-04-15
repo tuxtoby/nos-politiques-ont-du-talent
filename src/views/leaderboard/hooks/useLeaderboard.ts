@@ -12,7 +12,7 @@ export function useLeaderboard(data: Politician[]) {
 
   const handleDisplayModeChange = (
     event: React.MouseEvent<HTMLElement>,
-    newMode: DisplayMode | null,
+    newMode: DisplayMode | null
   ) => {
     if (newMode !== null) {
       setDisplayMode(newMode);
@@ -20,24 +20,22 @@ export function useLeaderboard(data: Politician[]) {
   };
 
   const processedData = useMemo(() => processData(data, displayMode), [data, displayMode]);
-  
+
   const filteredData = useMemo(() => {
     if (!searchQuery.trim()) {
       return processedData;
     }
-    
+
     const normalizedQuery = searchQuery.toLowerCase().trim();
-    
-    return processedData.filter(item => 
-      item.name.toLowerCase().includes(normalizedQuery) || 
-      item.caption.toLowerCase().includes(normalizedQuery)
+
+    return processedData.filter(
+      item =>
+        item.name.toLowerCase().includes(normalizedQuery) ||
+        item.caption.toLowerCase().includes(normalizedQuery)
     );
   }, [processedData, searchQuery]);
 
-  const topThree = useMemo(() => 
-    filteredData.slice(0, 3), 
-    [filteredData]
-  );
+  const topThree = useMemo(() => filteredData.slice(0, 3), [filteredData]);
 
   return {
     displayMode,
@@ -45,7 +43,7 @@ export function useLeaderboard(data: Politician[]) {
     searchQuery,
     setSearchQuery,
     leaderboardData: filteredData,
-    topThree
+    topThree,
   };
 }
 
@@ -60,7 +58,8 @@ function processData(data: Politician[], displayMode: DisplayMode): LeaderboardD
 }
 
 function processGeneralData(data: Politician[]): LeaderboardData[] {
-  return data.map(politician => createLeaderboardDataFromPolitician(politician))
+  return data
+    .map(politician => createLeaderboardDataFromPolitician(politician))
     .sort(sortLeaderboardData);
 }
 
@@ -75,33 +74,39 @@ function processPoliticalSideData(data: Politician[]): LeaderboardData[] {
 }
 
 function groupDataByParty(data: Politician[]): Record<string, LeaderboardData> {
-  return data.reduce((acc, politician) => {
-    const partyId = politician.party?.id;
-    if (!partyId) return acc;
-    
-    if (!acc[partyId]) {
-      acc[partyId] = createLeaderboardDataFromParty(politician.party);
-    }
-    
-    updatePartyLeaderboardData(acc[partyId], politician);
-    return acc;
-  }, {} as Record<string, LeaderboardData>);
+  return data.reduce(
+    (acc, politician) => {
+      const partyId = politician.party?.id;
+      if (!partyId) return acc;
+
+      if (!acc[partyId]) {
+        acc[partyId] = createLeaderboardDataFromParty(politician.party);
+      }
+
+      updatePartyLeaderboardData(acc[partyId], politician);
+      return acc;
+    },
+    {} as Record<string, LeaderboardData>
+  );
 }
 
 function groupDataByPoliticalSide(data: Politician[]): Record<string, LeaderboardData> {
-  return data.reduce((acc, politician) => {
-    const politicalSide = politician.party?.politicalSide;
-    if (!politicalSide) return acc;
-    
-    const sideId = String(politicalSide.id);
-    
-    if (!acc[sideId]) {
-      acc[sideId] = createLeaderboardDataFromPoliticalSide(politicalSide);
-    }
-    
-    updatePoliticalSideLeaderboardData(acc[sideId], politician);
-    return acc;
-  }, {} as Record<string, LeaderboardData>);
+  return data.reduce(
+    (acc, politician) => {
+      const politicalSide = politician.party?.politicalSide;
+      if (!politicalSide) return acc;
+
+      const sideId = String(politicalSide.id);
+
+      if (!acc[sideId]) {
+        acc[sideId] = createLeaderboardDataFromPoliticalSide(politicalSide);
+      }
+
+      updatePoliticalSideLeaderboardData(acc[sideId], politician);
+      return acc;
+    },
+    {} as Record<string, LeaderboardData>
+  );
 }
 
 function sortLeaderboardData(a: LeaderboardData, b: LeaderboardData): number {
@@ -113,7 +118,7 @@ function sortLeaderboardData(a: LeaderboardData, b: LeaderboardData): number {
 function createLeaderboardDataFromPolitician(politician: Politician): LeaderboardData {
   const totalPrisonTime = calculateTotalPrisonTime(politician.sentences);
   const totalFine = calculateTotalFine(politician.sentences);
-  
+
   return {
     id: politician.id,
     name: politician.name,
@@ -123,7 +128,7 @@ function createLeaderboardDataFromPolitician(politician: Politician): Leaderboar
     vote_url: politician.vote_url,
     numberOfSentences: politician.sentences.length,
     totalPrisonTime,
-    totalFine
+    totalFine,
   };
 }
 
@@ -136,7 +141,7 @@ function createLeaderboardDataFromParty(party: Party): LeaderboardData {
     logo_url: party.logo_url || '',
     numberOfSentences: 0,
     totalPrisonTime: 0,
-    totalFine: 0
+    totalFine: 0,
   };
 }
 
@@ -149,17 +154,23 @@ function createLeaderboardDataFromPoliticalSide(politicalSide: PoliticalSide): L
     logo_url: '',
     numberOfSentences: 0,
     totalPrisonTime: 0,
-    totalFine: 0
+    totalFine: 0,
   };
 }
 
-function updatePartyLeaderboardData(leaderboardData: LeaderboardData, politician: Politician): void {
+function updatePartyLeaderboardData(
+  leaderboardData: LeaderboardData,
+  politician: Politician
+): void {
   leaderboardData.numberOfSentences += politician.sentences.length;
   leaderboardData.totalPrisonTime += calculateTotalPrisonTime(politician.sentences);
   leaderboardData.totalFine += calculateTotalFine(politician.sentences);
 }
 
-function updatePoliticalSideLeaderboardData(leaderboardData: LeaderboardData, politician: Politician): void {
+function updatePoliticalSideLeaderboardData(
+  leaderboardData: LeaderboardData,
+  politician: Politician
+): void {
   leaderboardData.numberOfSentences += politician.sentences.length;
   leaderboardData.totalPrisonTime += calculateTotalPrisonTime(politician.sentences);
   leaderboardData.totalFine += calculateTotalFine(politician.sentences);

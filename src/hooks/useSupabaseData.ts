@@ -29,6 +29,6 @@ export function useSupabaseData() {
     politicians,
     supabaseLoading,
     error,
-    refetch: fetchData
+    refetch: fetchData,
   };
 }

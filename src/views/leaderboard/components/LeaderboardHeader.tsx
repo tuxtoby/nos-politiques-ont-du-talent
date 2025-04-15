@@ -9,11 +9,11 @@ interface LeaderboardHeaderProps {
   onSearchChange?: (query: string) => void;
 }
 
-export const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({ 
+export const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({
   title,
   showSearch = false,
   searchQuery = '',
-  onSearchChange
+  onSearchChange,
 }) => {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onSearchChange) {
@@ -23,7 +23,9 @@ export const LeaderboardHeader: React.FC<LeaderboardHeaderProps> = ({
 
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{title}</Typography>
+      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+        {title}
+      </Typography>
       {showSearch && (
         <Box sx={{ display: 'flex', gap: 2 }}>
           <TextField
