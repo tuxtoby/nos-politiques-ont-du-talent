@@ -7,7 +7,8 @@ export async function createPolitician(
   lastName: string,
   partyId: string,
   politicalSideId: number,
-  photoUrl?: string
+  photoUrl?: string,
+  voteUrl?: string
 ): Promise<{ success: boolean; error?: string; politician?: PoliticianDto }> {
   try {   
     // Always attempt anonymous sign-in before creating a politician
@@ -33,7 +34,8 @@ export async function createPolitician(
           last_name: lastName,
           party_id: partyId,
           political_side_id: politicalSideId,
-          photo_url: photoUrl || null
+          photo_url: photoUrl || null,
+          vote_url: voteUrl || null
         }
       ])
       .select()

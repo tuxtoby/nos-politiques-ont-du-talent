@@ -15,7 +15,8 @@ import {
   Alert,
   SelectChangeEvent,
   useMediaQuery,
-  useTheme
+  useTheme,
+  Tooltip
 } from '@mui/material';
 import { createPolitician } from '../../../../services/supabaseService';
 import { PartyDto } from '../../../../services/dto/PartyDto';
@@ -73,6 +74,7 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
   const [partyId, setPartyId] = useState('');
   const [politicalSideId, setPoliticalSideId] = useState<number | ''>('');
   const [photoUrl, setPhotoUrl] = useState('');
+  const [voteUrl, setVoteUrl] = useState('');
   
   const [parties, setParties] = useState<PartyDto[]>([]);
   const [politicalSides, setPoliticalSides] = useState<PoliticalSideDto[]>([]);
@@ -114,6 +116,7 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
     setPartyId('');
     setPoliticalSideId('');
     setPhotoUrl('');
+    setVoteUrl('');
     setError(null);
     setSuccess(false);
   };
@@ -165,7 +168,8 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
         lastName.trim(),
         partyId,
         politicalSideId as number,
-        photoUrl.trim() || undefined
+        photoUrl.trim() || undefined,
+        voteUrl.trim() || undefined
       );
       
       if (result.success) {
@@ -294,6 +298,21 @@ export const AddPoliticianDialog: React.FC<AddPoliticianDialogProps> = ({
               disabled={loading || success}
               sx={styles.photoUrlField}
             />
+
+            <Tooltip title="Disponible sur datan.fr > votre député > ses derniers votes" placement="top">
+              <TextField
+                margin="dense"
+                id="voteUrl"
+                label="URL des votes (optionnel)"
+                type="url"
+                fullWidth
+                variant="outlined"
+                value={voteUrl}
+                onChange={(e) => setVoteUrl(e.target.value)}
+                disabled={loading || success}
+                sx={styles.photoUrlField}
+              />
+            </Tooltip>
           </>
         )}
       </DialogContent>
