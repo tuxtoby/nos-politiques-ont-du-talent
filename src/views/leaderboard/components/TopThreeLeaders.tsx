@@ -51,9 +51,11 @@ const styles = {
   },
   caption: {
     fontSize: { xs: '0.75rem', sm: '0.875rem' },
-    whiteSpace: 'nowrap',
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
     overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    lineHeight: 1.2,
   },
   trophyIcon: {
     ml: 'auto',
