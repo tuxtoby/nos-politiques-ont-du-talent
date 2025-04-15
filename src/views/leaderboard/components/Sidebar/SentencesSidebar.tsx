@@ -1,6 +1,7 @@
 import React from 'react';
-import { Box, Typography, Drawer, IconButton, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Typography, Drawer, IconButton, useMediaQuery, useTheme, Link } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+import HowToVoteIcon from '@mui/icons-material/HowToVote';
 import { LeaderboardData } from '../../adapters/LeaderboardData';
 import { Politician } from '../../../../entities/Politician';
 import { useSentences } from '../../hooks/useSentences';
@@ -37,22 +38,39 @@ export function SentencesSidebar({
       onClose={onClose}
       sx={styles.drawer}
     >
-      <SidebarHeader onClose={onClose} />
-      <EntityHeader selectedData={selectedData} />
-      
-      {sentences.length > 0 && <SentenceSummary sentences={sentences} />}
-      <SentencesList sentences={sentences} />
+      <CloseButtonHeader onClose={onClose} />
+      <Box sx={styles.contentContainer}>
+        <EntityHeader selectedData={selectedData} />
+        {sentences.length > 0 && <SentenceSummary sentences={sentences} />}
+        
+        {selectedData.vote_url && (
+          <Link 
+            href={selectedData.vote_url} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            sx={styles.voteButton}
+            underline="none"
+          >
+            <HowToVoteIcon sx={styles.voteButtonIcon} />
+            Voir son activité parlementaire
+          </Link>
+        )}
+        
+        <Box sx={styles.condemnationsSection}>
+          <Typography variant="h6" sx={styles.sectionTitle}>
+            Condamnations
+          </Typography>
+          <SentencesList sentences={sentences} />
+        </Box>
+      </Box>
     </Drawer>
   );
 }
 
-function SidebarHeader({ onClose }: { onClose: () => void }) {
+function CloseButtonHeader({ onClose }: { onClose: () => void }) {
   return (
-    <Box sx={styles.header}>
-      <Typography variant="h6" sx={styles.title}>
-        Condamnations
-      </Typography>
-      <IconButton onClick={onClose} size="small">
+    <Box sx={styles.closeHeader}>
+      <IconButton onClick={onClose} size="small" sx={styles.closeButton}>
         <CloseIcon />
       </IconButton>
     </Box>

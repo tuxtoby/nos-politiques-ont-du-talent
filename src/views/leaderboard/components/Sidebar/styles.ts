@@ -1,5 +1,5 @@
 export const styles = {
-  drawer: {
+    drawer: {
     width: { xs: '100%', sm: 380 },
     flexShrink: 0,
     '& .MuiDrawer-paper': {
@@ -7,6 +7,32 @@ export const styles = {
       boxSizing: 'border-box',
       padding: { xs: 1, sm: 2 }
     }
+  },
+  closeHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    mb: { xs: 1, sm: 1 }
+  },
+  closeButton: {
+    color: 'text.secondary',
+    '&:hover': {
+      backgroundColor: 'rgba(0, 0, 0, 0.04)',
+      color: 'text.primary'
+    }
+  },
+  contentContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%'
+  },
+  condemnationsSection: {
+    mt: { xs: 2, sm: 3 }
+  },
+  sectionTitle: {
+    fontWeight: 'bold',
+    fontSize: { xs: '1.1rem', sm: '1.25rem' },
+    mb: { xs: 2, sm: 2 }
   },
   header: {
     display: 'flex',
@@ -21,10 +47,9 @@ export const styles = {
   entityInfo: {
     display: 'flex',
     alignItems: 'center',
-    mb: { xs: 3, sm: 4 },
-    mt: { xs: 1, sm: 2 },
+    mb: { xs: 3, sm: 2 },
+    mt: { xs: 1, sm: 0 },
     pb: { xs: 2, sm: 3 },
-    borderBottom: '1px solid rgba(0, 0, 0, 0.08)'
   },
   avatar: {
     width: { xs: 50, sm: 70 },
@@ -81,11 +106,11 @@ export const styles = {
     p: { xs: 1.5, sm: 2 },
     mb: 2,
     borderRadius: 2,
-    boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+    boxShadow: '0 3px 4px rgba(0,0,0,0.15)',
     transition: 'transform 0.2s',
     '&:hover': {
       transform: 'translateY(-2px)',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+      boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
     }
   },
   sentenceType: {

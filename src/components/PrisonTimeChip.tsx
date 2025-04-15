@@ -38,7 +38,7 @@ export const PrisonTimeChip: React.FC<PrisonTimeChipProps> = ({
     return (
       <Box sx={styles.empty}>
         <DoNotDisturbIcon sx={styles.emptyIcon} />
-        <Typography variant="body2">Pas de prison</Typography>
+        <Typography variant="body2">Prison</Typography>
       </Box>
     );
   }
