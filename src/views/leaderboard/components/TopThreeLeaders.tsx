@@ -59,7 +59,12 @@ const styles = {
     justifyContent: 'center',
     flexWrap: 'wrap',
     gap: 1,
-    mt: 2
+    mt: 2,
+    '& > *:nth-of-type(3)': {
+      marginLeft: 'auto',
+      marginRight: 'auto',
+      marginTop: 1
+    }
   },
   gridItem: {
     width: { xs: '100%', sm: '33.33%' },
@@ -138,9 +143,11 @@ export const TopThreeLeaders: React.FC<TopThreeLeadersProps> = ({
                 direction={isMobile ? "column" : "row"} 
                 spacing={1}
                 alignItems="center"
+                useFlexGap
               >
                 <SentencesChip count={leader.numberOfSentences} size={isMobile ? "small" : "medium"} />
                 <PrisonTimeChip months={leader.totalPrisonTime} size={isMobile ? "small" : "medium"} />
+                <Box sx={{ width: '100%', display: isMobile ? 'none' : 'block', height: 0 }}></Box>
                 <FineChip amount={leader.totalFine} size={isMobile ? "small" : "medium"} />
               </Stack>
             </CardContent>
