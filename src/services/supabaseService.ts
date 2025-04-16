@@ -97,6 +97,7 @@ export async function fetchPoliticians(): Promise<Politician[]> {
           photo: politician.photo_url || '',
           vote_url: politician.vote_url,
           sentences: politicianSentences,
+          simplified_name: politician.simplified_name,
         };
       })
       .filter(politician => politician !== null) as Politician[];

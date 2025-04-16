@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, ToggleButtonGroup, ToggleButton, useMediaQuery, useTheme } from '@mui/material';
 import { TopThreeLeaders } from './components/TopThreeLeaders';
 import { GlobalRankingTable } from './components/GlobalRankingTable';
@@ -57,9 +57,10 @@ const styles = {
 interface LeaderboardProps {
   politicians: Politician[];
   refetch: () => void;
+  initialSelectedPolitician?: Politician;
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch, initialSelectedPolitician }) => {
   const {
     displayMode,
     handleDisplayModeChange,
@@ -75,6 +76,22 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
+  useEffect(() => {
+    if (initialSelectedPolitician) {
+      const politicianData = leaderboardData.find(
+        (data) => 
+          data.politicalEntity && 
+          'id' in data.politicalEntity && 
+          data.politicalEntity.id === initialSelectedPolitician.id
+      );
+      
+      if (politicianData) {
+        setSelectedData(politicianData);
+        setSidebarOpen(true);
+      }
+    }
+  }, [initialSelectedPolitician, leaderboardData]);
 
   const handleAddPolitician = () => {
     setOpenPoliticianDialog(true);
@@ -107,6 +124,11 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch }) => {
 
   const handleSidebarClose = () => {
     setSidebarOpen(false);
+    
+    // If we came from a direct URL, navigate back to the home page
+    if (initialSelectedPolitician) {
+      window.history.pushState({}, '', '/');
+    }
   };
 
   const handleSearchChange = (query: string) => {

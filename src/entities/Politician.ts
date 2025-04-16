@@ -8,4 +8,5 @@ export interface Politician {
   photo: string;
   vote_url?: string;
   sentences: Sentence[];
+  simplified_name: string;
 }

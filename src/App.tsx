@@ -6,11 +6,13 @@ import {
   Box,
   Container,
 } from '@mui/material';
+import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
 import Leaderboard from './views/leaderboard/Leaderboard';
 import { useAuthInitialization } from './views/hooks/useAuthInitialization';
 import { useSupabaseData } from './hooks/useSupabaseData';
 import { StatsCards } from './views/leaderboard/components/StatsCards';
 import Header from './components/Header';
+import { findPoliticianBySimplifiedName } from './services/politicianService';
 
 const styles = {
   theme: createTheme({
@@ -47,42 +49,57 @@ const styles = {
   },
 };
 
-function App() {
-  const { authInitialized, loading } = useAuthInitialization();
+function MainApp() {
+  const { simplifiedName } = useParams<{ simplifiedName?: string }>();
   const { politicians, supabaseLoading, refetch } = useSupabaseData();
+  const { authInitialized, loading } = useAuthInitialization();
 
   if (loading || supabaseLoading) {
     return (
-      <ThemeProvider theme={styles.theme}>
-        <CssBaseline />
-        <Box sx={styles.loading}>
-          <CircularProgress />
-        </Box>
-      </ThemeProvider>
+      <Box sx={styles.loading}>
+        <CircularProgress />
+      </Box>
     );
   }
 
   if (!authInitialized) {
     return (
-      <ThemeProvider theme={styles.theme}>
-        <CssBaseline />
-        <Box sx={styles.loading}>
-          <div>Authentication failed. Please try again later.</div>
-        </Box>
-      </ThemeProvider>
+      <Box sx={styles.loading}>
+        <div>Authentication failed. Please try again later.</div>
+      </Box>
     );
   }
 
+  // Find the politician by simplified_name if it exists in the URL
+  const initialSelectedPolitician = simplifiedName 
+    ? findPoliticianBySimplifiedName(politicians, simplifiedName) 
+    : undefined;
+
+  return (
+    <Box sx={styles.container}>
+      <Container maxWidth="lg" disableGutters>
+        <Header />
+        <StatsCards data={politicians} />
+        <Leaderboard 
+          politicians={politicians} 
+          refetch={refetch} 
+          initialSelectedPolitician={initialSelectedPolitician}
+        />
+      </Container>
+    </Box>
+  );
+}
+
+function App() {
   return (
     <ThemeProvider theme={styles.theme}>
       <CssBaseline />
-      <Box sx={styles.container}>
-        <Container maxWidth="lg" disableGutters>
-          <Header />
-          <StatsCards data={politicians} />
-          <Leaderboard politicians={politicians} refetch={refetch} />
-        </Container>
-      </Box>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/:simplifiedName" element={<MainApp />} />
+          <Route path="/" element={<MainApp />} />
+        </Routes>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }
