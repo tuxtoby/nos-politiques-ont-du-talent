@@ -5,7 +5,6 @@ import { Sentence } from '../entities/Sentence';
 // Import get operations
 import { getPoliticians } from './api/get/getPoliticians';
 import { getParties } from './api/get/getParties';
-import { getFamilies } from './api/get/getFamilies';
 import { getPoliticalSides } from './api/get/getPoliticalSides';
 import { getSentences, getSentencesByPoliticianId } from './api/get/getSentences';
 import { getPartyName as getPartyNameImpl } from './api/get/getPartyName';
@@ -29,7 +28,6 @@ export async function fetchPoliticians(): Promise<Politician[]> {
   try {
     const politicians = await getPoliticians();
     const parties = await getParties();
-    const families = await getFamilies();
     const sides = await getPoliticalSides();
     const sentencesData = await getSentences();
 
@@ -41,14 +39,6 @@ export async function fetchPoliticians(): Promise<Politician[]> {
 
         if (!party) {
           console.error(`Party not found for politician ${politician.id}`);
-          return null;
-        }
-
-        // Find the party family for this party
-        const family = families.find(f => f.id === party.family_id);
-
-        if (!family) {
-          console.error(`Party family not found for party ${party.id}`);
           return null;
         }
 
@@ -76,11 +66,7 @@ export async function fetchPoliticians(): Promise<Politician[]> {
           id: party.id,
           name: party.name,
           abbreviation: party.abbreviation,
-          family: {
-            id: family.id,
-            name: family.name,
-            description: family.description,
-          },
+          description: party.description,
           politicalSide: {
             id: side.id,
             name: side.name,

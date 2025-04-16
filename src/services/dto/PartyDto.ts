@@ -4,6 +4,7 @@ export interface PartyDto {
   name: string;
   abbreviation: string;
   political_side_id: number;
+  description: string;
   logo_url?: string;
   start_date: string;
   end_date: string;
