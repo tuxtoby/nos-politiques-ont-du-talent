@@ -5,16 +5,21 @@ import { Politician } from '../../../entities/Politician';
 import { Party } from '../../../entities/Party';
 import { PoliticalSide } from '../../../entities/PoliticalSide';
 
+export interface SentenceWithPolitician {
+  sentence: Sentence;
+  politicianName?: string;
+}
+
 export function useSentences(selectedData: LeaderboardData | null, allPoliticians: Politician[]) {
-  const sentences = useMemo(() => {
+  const sentencesWithPoliticians = useMemo(() => {
     if (!selectedData) return [];
     return getSentencesForEntity(selectedData, allPoliticians);
   }, [selectedData, allPoliticians]);
 
-  return { sentences };
+  return { sentences: sentencesWithPoliticians };
 }
 
-function getSentencesForEntity(data: LeaderboardData, allPoliticians: Politician[]): Sentence[] {
+function getSentencesForEntity(data: LeaderboardData, allPoliticians: Politician[]): SentenceWithPolitician[] {
   const entity = data.politicalEntity;
 
   if ('sentences' in entity) {
@@ -26,23 +31,36 @@ function getSentencesForEntity(data: LeaderboardData, allPoliticians: Politician
   }
 }
 
-function getPoliticianSentences(politician: Politician): Sentence[] {
-  return politician.sentences;
+function getPoliticianSentences(politician: Politician): SentenceWithPolitician[] {
+  return politician.sentences.map(sentence => ({
+    sentence,
+    politicianName: undefined // No need to show politician name when viewing the politician's own sentences
+  }));
 }
 
-function getPartySentences(party: Party, allPoliticians: Politician[]): Sentence[] {
+function getPartySentences(party: Party, allPoliticians: Politician[]): SentenceWithPolitician[] {
   const politiciansInParty = allPoliticians.filter(politician => politician.party?.id === party.id);
 
-  return politiciansInParty.flatMap(politician => politician.sentences);
+  return politiciansInParty.flatMap(politician => 
+    politician.sentences.map(sentence => ({
+      sentence,
+      politicianName: politician.name
+    }))
+  );
 }
 
 function getPoliticalSideSentences(
   politicalSide: PoliticalSide,
   allPoliticians: Politician[]
-): Sentence[] {
+): SentenceWithPolitician[] {
   const politiciansWithSide = allPoliticians.filter(
     politician => politician.party?.politicalSide?.id === politicalSide.id
   );
 
-  return politiciansWithSide.flatMap(politician => politician.sentences);
+  return politiciansWithSide.flatMap(politician => 
+    politician.sentences.map(sentence => ({
+      sentence,
+      politicianName: politician.name
+    }))
+  );
 }

@@ -10,9 +10,10 @@ import { styles } from './styles';
 
 interface SentenceCardProps {
   sentence: Sentence;
+  politicianName?: string;
 }
 
-export function SentenceCard({ sentence }: SentenceCardProps) {
+export function SentenceCard({ sentence, politicianName }: SentenceCardProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -21,6 +22,12 @@ export function SentenceCard({ sentence }: SentenceCardProps) {
       <Typography variant="subtitle1" sx={styles.sentenceType}>
         {sentence.type}
       </Typography>
+      
+      {politicianName && (
+        <Typography variant="body2" sx={styles.politicianName}>
+          {politicianName}
+        </Typography>
+      )}
 
       <Box sx={styles.sentenceDetails}>
         <FineChip amount={sentence.fine} size="small" />

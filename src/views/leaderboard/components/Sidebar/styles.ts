@@ -118,6 +118,13 @@ export const styles = {
     mb: 2,
     fontSize: { xs: '1rem', sm: '1.1rem' },
   },
+  politicianName: {
+    fontStyle: 'italic',
+    color: 'text.secondary',
+    fontSize: { xs: '0.8rem', sm: '0.9rem' },
+    mb: 1.5,
+    mt: -1,
+  },
   sentenceDetails: {
     display: 'flex',
     flexWrap: 'wrap',

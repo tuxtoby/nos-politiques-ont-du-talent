@@ -36,7 +36,7 @@ export function SentencesSidebar({
       <CloseButtonHeader onClose={onClose} />
       <Box sx={styles.contentContainer}>
         <EntityHeader selectedData={selectedData} />
-        {sentences.length > 0 && <SentenceSummary sentences={sentences} />}
+        {sentences.length > 0 && <SentenceSummary sentences={sentences.map(s => s.sentence)} />}
 
         {selectedData.vote_url && (
           <Link

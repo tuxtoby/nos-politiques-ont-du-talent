@@ -1,11 +1,11 @@
 import React from 'react';
 import { List, Typography } from '@mui/material';
-import { Sentence } from '../../../../entities/Sentence';
+import { SentenceWithPolitician } from '../../hooks/useSentences';
 import { SentenceCard } from './SentenceCard';
 import { styles } from './styles';
 
 interface SentencesListProps {
-  sentences: Sentence[];
+  sentences: SentenceWithPolitician[];
 }
 
 export function SentencesList({ sentences }: SentencesListProps) {
@@ -19,8 +19,12 @@ export function SentencesList({ sentences }: SentencesListProps) {
 
   return (
     <List disablePadding>
-      {sentences.map((sentence, index) => (
-        <SentenceCard key={index} sentence={sentence} />
+      {sentences.map((sentenceWithPolitician, index) => (
+        <SentenceCard 
+          key={index} 
+          sentence={sentenceWithPolitician.sentence} 
+          politicianName={sentenceWithPolitician.politicianName}
+        />
       ))}
     </List>
   );
