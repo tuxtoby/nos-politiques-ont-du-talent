@@ -11,6 +11,7 @@ import { Politician } from '../../entities/Politician';
 import { SentencesSidebar } from './components/Sidebar/SentencesSidebar';
 import { LeaderboardData } from './adapters/LeaderboardData';
 import { Party } from '../../entities/Party';
+import { PoliticalSide } from '../../entities/PoliticalSide';
 
 const styles = {
   container: {
@@ -60,13 +61,15 @@ interface LeaderboardProps {
   refetch: () => void;
   initialSelectedPolitician?: Politician;
   initialSelectedParty?: Party;
+  initialSelectedPoliticalSide?: PoliticalSide;
 }
 
 const Leaderboard: React.FC<LeaderboardProps> = ({ 
   politicians, 
   refetch, 
   initialSelectedPolitician,
-  initialSelectedParty
+  initialSelectedParty,
+  initialSelectedPoliticalSide
 }) => {
   const {
     displayMode,
@@ -84,16 +87,16 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  // Set display mode to 'parti' when initialSelectedParty is provided
+  // Set display mode based on URL parameters
   useEffect(() => {
-    if (initialSelectedParty) {
+    if (initialSelectedParty && displayMode !== 'parti') {
       setSearchQuery('');
-      // Directly set display mode to 'parti' when a party is selected via URL
-      if (displayMode !== 'parti') {
-        handleDisplayModeChange({ target: {} } as any, 'parti');
-      }
+      handleDisplayModeChange({ target: {} } as any, 'parti');
+    } else if (initialSelectedPoliticalSide && displayMode !== 'couleur') {
+      setSearchQuery('');
+      handleDisplayModeChange({ target: {} } as any, 'couleur');
     }
-  }, [initialSelectedParty, displayMode, handleDisplayModeChange, setSearchQuery]);
+  }, [initialSelectedParty, initialSelectedPoliticalSide, displayMode, handleDisplayModeChange, setSearchQuery]);
 
   useEffect(() => {
     // Handle initialSelectedPolitician
@@ -125,7 +128,22 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
         setSidebarOpen(true);
       }
     }
-  }, [initialSelectedPolitician, initialSelectedParty, leaderboardData]);
+    
+    // Handle initialSelectedPoliticalSide
+    if (initialSelectedPoliticalSide) {
+      const sideData = leaderboardData.find(
+        (data) => 
+          data.politicalEntity && 
+          'id' in data.politicalEntity && 
+          data.politicalEntity.id === initialSelectedPoliticalSide.id
+      );
+      
+      if (sideData) {
+        setSelectedData(sideData);
+        setSidebarOpen(true);
+      }
+    }
+  }, [initialSelectedPolitician, initialSelectedParty, initialSelectedPoliticalSide, leaderboardData]);
 
   const handleAddPolitician = () => {
     setOpenPoliticianDialog(true);
@@ -160,7 +178,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({
     setSidebarOpen(false);
     
     // If we came from a direct URL, navigate back to the home page
-    if (initialSelectedPolitician || initialSelectedParty) {
+    if (initialSelectedPolitician || initialSelectedParty || initialSelectedPoliticalSide) {
       window.history.pushState({}, '', '/');
     }
   };

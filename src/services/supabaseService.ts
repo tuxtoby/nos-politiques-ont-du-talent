@@ -84,6 +84,7 @@ export async function fetchPoliticians(): Promise<Politician[]> {
           politicalSide: {
             id: side.id,
             name: side.name,
+            simplified_name: side.simplified_name,
           },
           logo_url: party.logo_url,
           start_date: party.start_date,

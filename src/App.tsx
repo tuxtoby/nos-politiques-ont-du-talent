@@ -12,7 +12,11 @@ import { useAuthInitialization } from './views/hooks/useAuthInitialization';
 import { useSupabaseData } from './hooks/useSupabaseData';
 import { StatsCards } from './views/leaderboard/components/StatsCards';
 import Header from './components/Header';
-import { findPoliticianBySimplifiedName, findPartyByAbbreviation } from './services/politicianService';
+import { 
+  findPoliticianBySimplifiedName, 
+  findPartyByAbbreviation,
+  findPoliticalSideBySimplifiedName
+} from './services/politicianService';
 
 const styles = {
   theme: createTheme({
@@ -50,9 +54,10 @@ const styles = {
 };
 
 function MainApp() {
-  const { simplifiedName, abbreviation } = useParams<{ 
+  const { simplifiedName, abbreviation, simplifiedSideName } = useParams<{ 
     simplifiedName?: string;
     abbreviation?: string;
+    simplifiedSideName?: string;
   }>();
   const { politicians, supabaseLoading, refetch } = useSupabaseData();
   const { authInitialized, loading } = useAuthInitialization();
@@ -82,6 +87,11 @@ function MainApp() {
   const initialSelectedParty = abbreviation
     ? findPartyByAbbreviation(politicians, abbreviation)
     : undefined;
+    
+  // Find the political side by simplified_name if it exists in the URL
+  const initialSelectedPoliticalSide = simplifiedSideName
+    ? findPoliticalSideBySimplifiedName(politicians, simplifiedSideName)
+    : undefined;
 
   return (
     <Box sx={styles.container}>
@@ -93,6 +103,7 @@ function MainApp() {
           refetch={refetch} 
           initialSelectedPolitician={initialSelectedPolitician}
           initialSelectedParty={initialSelectedParty}
+          initialSelectedPoliticalSide={initialSelectedPoliticalSide}
         />
       </Container>
     </Box>
@@ -107,6 +118,7 @@ function App() {
         <Routes>
           <Route path="/:simplifiedName" element={<MainApp />} />
           <Route path="/partie/:abbreviation" element={<MainApp />} />
+          <Route path="/couleur/:simplifiedSideName" element={<MainApp />} />
           <Route path="/" element={<MainApp />} />
         </Routes>
       </BrowserRouter>
