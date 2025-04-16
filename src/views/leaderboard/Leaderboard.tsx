@@ -10,6 +10,7 @@ import { AddSentenceDialog } from './components/AddDataDialog/AddSentenceDialog'
 import { Politician } from '../../entities/Politician';
 import { SentencesSidebar } from './components/Sidebar/SentencesSidebar';
 import { LeaderboardData } from './adapters/LeaderboardData';
+import { Party } from '../../entities/Party';
 
 const styles = {
   container: {
@@ -58,9 +59,15 @@ interface LeaderboardProps {
   politicians: Politician[];
   refetch: () => void;
   initialSelectedPolitician?: Politician;
+  initialSelectedParty?: Party;
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch, initialSelectedPolitician }) => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ 
+  politicians, 
+  refetch, 
+  initialSelectedPolitician,
+  initialSelectedParty
+}) => {
   const {
     displayMode,
     handleDisplayModeChange,
@@ -77,7 +84,19 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch, initial
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
+  // Set display mode to 'parti' when initialSelectedParty is provided
   useEffect(() => {
+    if (initialSelectedParty) {
+      setSearchQuery('');
+      // Directly set display mode to 'parti' when a party is selected via URL
+      if (displayMode !== 'parti') {
+        handleDisplayModeChange({ target: {} } as any, 'parti');
+      }
+    }
+  }, [initialSelectedParty, displayMode, handleDisplayModeChange, setSearchQuery]);
+
+  useEffect(() => {
+    // Handle initialSelectedPolitician
     if (initialSelectedPolitician) {
       const politicianData = leaderboardData.find(
         (data) => 
@@ -91,7 +110,22 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch, initial
         setSidebarOpen(true);
       }
     }
-  }, [initialSelectedPolitician, leaderboardData]);
+    
+    // Handle initialSelectedParty
+    if (initialSelectedParty) {
+      const partyData = leaderboardData.find(
+        (data) => 
+          data.politicalEntity && 
+          'id' in data.politicalEntity && 
+          data.politicalEntity.id === initialSelectedParty.id
+      );
+      
+      if (partyData) {
+        setSelectedData(partyData);
+        setSidebarOpen(true);
+      }
+    }
+  }, [initialSelectedPolitician, initialSelectedParty, leaderboardData]);
 
   const handleAddPolitician = () => {
     setOpenPoliticianDialog(true);
@@ -126,7 +160,7 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ politicians, refetch, initial
     setSidebarOpen(false);
     
     // If we came from a direct URL, navigate back to the home page
-    if (initialSelectedPolitician) {
+    if (initialSelectedPolitician || initialSelectedParty) {
       window.history.pushState({}, '', '/');
     }
   };

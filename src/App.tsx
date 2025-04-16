@@ -12,7 +12,7 @@ import { useAuthInitialization } from './views/hooks/useAuthInitialization';
 import { useSupabaseData } from './hooks/useSupabaseData';
 import { StatsCards } from './views/leaderboard/components/StatsCards';
 import Header from './components/Header';
-import { findPoliticianBySimplifiedName } from './services/politicianService';
+import { findPoliticianBySimplifiedName, findPartyByAbbreviation } from './services/politicianService';
 
 const styles = {
   theme: createTheme({
@@ -50,7 +50,10 @@ const styles = {
 };
 
 function MainApp() {
-  const { simplifiedName } = useParams<{ simplifiedName?: string }>();
+  const { simplifiedName, abbreviation } = useParams<{ 
+    simplifiedName?: string;
+    abbreviation?: string;
+  }>();
   const { politicians, supabaseLoading, refetch } = useSupabaseData();
   const { authInitialized, loading } = useAuthInitialization();
 
@@ -74,6 +77,11 @@ function MainApp() {
   const initialSelectedPolitician = simplifiedName 
     ? findPoliticianBySimplifiedName(politicians, simplifiedName) 
     : undefined;
+    
+  // Find the party by abbreviation if it exists in the URL
+  const initialSelectedParty = abbreviation
+    ? findPartyByAbbreviation(politicians, abbreviation)
+    : undefined;
 
   return (
     <Box sx={styles.container}>
@@ -84,6 +92,7 @@ function MainApp() {
           politicians={politicians} 
           refetch={refetch} 
           initialSelectedPolitician={initialSelectedPolitician}
+          initialSelectedParty={initialSelectedParty}
         />
       </Container>
     </Box>
@@ -97,6 +106,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/:simplifiedName" element={<MainApp />} />
+          <Route path="/partie/:abbreviation" element={<MainApp />} />
           <Route path="/" element={<MainApp />} />
         </Routes>
       </BrowserRouter>
